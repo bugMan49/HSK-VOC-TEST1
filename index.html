@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- 优化移动端视口 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HSK 词汇学习</title>
     <style>
         :root { 
@@ -12,10 +12,10 @@
             --danger-color: #e74c3c; 
             --bg-color: #f5f7fa; 
             --card-bg: #ffffff; 
-            --font-size-base: 16px; /* 基准字体大小 */
+            --font-size-base: 16px;
         }
         body { 
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; /* 添加中文字体栈 */
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             background-color: var(--bg-color); 
             display: flex; 
             justify-content: center; 
@@ -23,30 +23,29 @@
             min-height: 100vh; 
             margin: 0; 
             color: #333; 
-            font-size: var(--font-size-base); /* 应用基准字体 */
+            font-size: var(--font-size-base);
             line-height: 1.6;
-            overflow-x: hidden; /* 防止水平滚动条 */
+            overflow-x: hidden;
         }
         .container { 
-            width: 95%; /* 在移动端更宽裕 */
+            width: 95%;
             max-width: 500px; 
             text-align: center; 
             position: relative; 
-            padding: 20px 0; /* 添加上下内边距 */
+            padding: 20px 0;
         }
 
-        /* 移动端适配：调整按钮和控件大小 */
         @media (max-width: 480px) {
             :root { --font-size-base: 14px; }
             .flashcard { padding: 50px 15px; min-height: 180px; }
-            .chinese { font-size: 2.8rem; } /* 适当减小，保持比例 */
+            .chinese { font-size: 2.8rem; }
             .pinyin { font-size: 1.3rem; }
             .english { font-size: 1.5rem; }
-            .controls { flex-direction: column; gap: 10px; } /* 按钮垂直排列 */
-            .btn { padding: 12px 15px; } /* 调整按钮内边距 */
+            .controls { flex-direction: column; gap: 10px; }
+            .btn { padding: 12px 15px; }
             .hint-text { font-size: 0.7rem; }
-            .jump-controls { flex-direction: column; align-items: flex-end; gap: 5px; top: -70px; } /* 跳转控件垂直排列 */
-            .jump-input { width: 100px; max-width: 100px; } /* 限制输入框宽度 */
+            .jump-controls { flex-direction: column; align-items: flex-end; gap: 5px; top: -70px; }
+            .jump-input { width: 100px; max-width: 100px; }
         }
 
         .undo-btn { 
@@ -81,7 +80,8 @@
             flex-direction: column; 
             justify-content: center; 
             align-items: center; 
-            touch-action: manipulation; /* 优化触摸体验 */
+            touch-action: manipulation;
+            position: relative; /* 关键：为绝对定位子元素提供参考 */
         }
         .flashcard:active { transform: scale(0.98); }
         .chinese { 
@@ -91,7 +91,8 @@
             color: #2c3e50; 
             cursor: pointer; 
             user-select: none; 
-            line-height: 1.2; /* 紧凑行高 */
+            line-height: 1.2;
+            z-index: 1; /* 确保文本在按钮之上 */
         }
         .chinese:hover { text-decoration: underline; }
         .pinyin { 
@@ -101,6 +102,7 @@
             margin-bottom: 20px; 
             opacity: 1; 
             transition: opacity 0.3s ease; 
+            z-index: 1;
         }
         .pinyin.hidden { opacity: 0; }
         .english { 
@@ -110,12 +112,14 @@
             opacity: 0; 
             transform: translateY(10px); 
             transition: all 0.3s ease; 
+            z-index: 1;
         }
         .english.show { opacity: 1; transform: translateY(0); }
         .hint-text { 
             font-size: 0.8rem; 
             color: #bdc3c7; 
             margin-top: 20px; 
+            z-index: 1;
         }
         
         .controls { 
@@ -141,7 +145,7 @@
             gap: 5px; 
             transition: all 0.1s ease; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            touch-action: manipulation; /* 优化触摸体验 */
+            touch-action: manipulation;
         }
         .btn:disabled { 
             background-color: #ccc; 
@@ -175,7 +179,7 @@
             background-color: #95a5a6; 
             margin-top: 20px; 
             width: 100%; 
-            padding: 15px; /* 与其他按钮高度一致 */
+            padding: 15px;
         }
         .results-panel { 
             display: none; 
@@ -184,9 +188,9 @@
             border-radius: 10px; 
             margin-top: 20px; 
             text-align: left; 
-            max-height: 70vh; /* 限制高度，防止超出屏幕 */
+            max-height: 70vh; 
             overflow-y: auto; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* 添加阴影提升层级感 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .result-section { 
@@ -198,7 +202,7 @@
             margin-top: 0;
         }
         .word-item { 
-            display: block; /* 在小屏幕上改为块级显示 */
+            display: block;
             padding: 10px 5px; 
             border-bottom: 1px solid #f0f0f0; 
             font-size: 0.95em;
@@ -255,14 +259,14 @@
             top: -50px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 6px 10px; /* 减小内边距 */
-            font-size: 0.9rem; /* 减小字体 */
+            padding: 6px 10px;
+            font-size: 0.9rem;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            max-width: 120px; /* 限制最大宽度 */
-            text-overflow: ellipsis; /* 超出省略 */
+            max-width: 120px;
+            text-overflow: ellipsis;
         }
 
         .review-status-tag {
@@ -284,23 +288,29 @@
             color: #333;
         }
 
-        /* 新增：语音请求按钮 */
+        /* 修复后的语音请求按钮样式 */
         .speak-request-btn {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background-color: #3498db;
+            bottom: 10px; /* 相对于 .flashcard 定位 */
+            right: 10px;  /* 相对于 .flashcard 定位 */
+            background-color: #e74c3c; /* 使用危险色，表示需要操作 */
             color: white;
             border: none;
             border-radius: 50%;
             width: 30px;
             height: 30px;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
+            font-weight: bold;
             cursor: pointer;
             display: none; /* 默认隐藏 */
             align-items: center;
             justify-content: center;
-            z-index: 20;
+            z-index: 20; /* 确保在最顶层 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            touch-action: manipulation;
+        }
+        .speak-request-btn:hover {
+            background-color: #c0392b;
         }
 
     </style>
@@ -334,8 +344,8 @@
             <div class="pinyin hidden" id="word-py">pīnyīn</div>
             <div class="english" id="word-en"></div>
             <div class="hint-text">点击汉字发音并切换拼音显示，点击卡片查看英文释义</div>
-            <!-- 新增：当语音API不可用时，显示此按钮 -->
-            <button id="speakRequestBtn" class="speak-request-btn" title="请求语音权限">!</button>
+            <!-- 修复后的按钮位置 -->
+            <button id="speakRequestBtn" class="speak-request-btn" title="语音功能异常，点击尝试修复">!</button>
         </div>
 
         <div class="controls">
@@ -398,85 +408,53 @@
     const undoBtn = document.getElementById('undo-btn');
     const reviewStatusTag = document.getElementById('review-status-tag');
     const tagTextElement = document.getElementById('tag-text');
-    const speakRequestBtn = document.getElementById('speakRequestBtn'); // 获取新按钮
-
-    // 检查并初始化语音合成
-    function initSpeechSynthesis() {
-        // 检查浏览器是否支持 speechSynthesis
-        if ('speechSynthesis' in window) {
-            // 尝试加载语言包，这在某些Android浏览器上是必需的
-            setTimeout(() => {
-                const voices = speechSynthesis.getVoices();
-                if (voices.some(v => v.lang.includes('zh'))) {
-                    console.log('语音合成已就绪');
-                    speakRequestBtn.style.display = 'none'; // 隐藏请求按钮
-                } else {
-                    // 如果没有中文语音，提示用户
-                    console.warn('未检测到中文语音包，语音功能可能受限。');
-                    speakRequestBtn.style.display = 'flex'; // 显示请求按钮
-                }
-            }, 500); // 延迟获取，确保语音包已加载
-        } else {
-            console.error('浏览器不支持 speechSynthesis API');
-            speakRequestBtn.style.display = 'flex'; // 显示请求按钮
-        }
-    }
+    const speakRequestBtn = document.getElementById('speakRequestBtn');
 
     // 优化后的语音播放函数
     function speakChinese(text) {
         if ('speechSynthesis' in window) {
-            // 取消之前的语音
             if (speechSynthesis.speaking) {
                 speechSynthesis.cancel();
             }
-
             const utterThis = new SpeechSynthesisUtterance(text);
-            
-            // 设置属性
             utterThis.lang = 'zh-CN';
             utterThis.rate = currentSpeechRate;
-            utterThis.pitch = 1; // 保持默认音调
-            utterThis.volume = 1; // 保持默认音量
+            utterThis.pitch = 1;
+            utterThis.volume = 1;
 
-            // 尝试选择一个高质量的中文语音
             const voices = speechSynthesis.getVoices();
             const chineseVoice = voices.find(v => v.lang.includes('zh-CN') && v.name.includes('Female')) ||
                                 voices.find(v => v.lang.includes('zh-CN')) ||
-                                speechSynthesis.getVoices()[0]; // 退回到默认
+                                speechSynthesis.getVoices()[0];
             
             if (chineseVoice) {
                 utterThis.voice = chineseVoice;
             }
 
-            // 错误处理
             utterThis.onerror = (event) => {
                 console.error('语音播放失败:', event.error);
-                alert('语音播放失败，请稍后再试或检查浏览器设置。');
+                speakRequestBtn.style.display = 'flex'; // 播放失败，显示按钮
             };
 
             speechSynthesis.speak(utterThis);
         } else {
-            // 如果API不存在，也显示请求按钮
             speakRequestBtn.style.display = 'flex';
         }
     }
 
-    // 修改后的 speakAndTogglePinyin 函数
     function speakAndTogglePinyin(event) {
         event.stopPropagation();
-        // 调用优化后的语音函数
         speakChinese(elCn.textContent);
         togglePinyin();
     }
 
-    // 请求语音权限的按钮事件
     speakRequestBtn.addEventListener('click', () => {
         if ('speechSynthesis' in window) {
-            // 在用户手势操作下调用 speak，可以触发权限请求
+            // 尝试通过播放一个空文本来触发权限
             const dummyUtterance = new SpeechSynthesisUtterance('');
             speechSynthesis.speak(dummyUtterance);
-            // 重新初始化，检查是否成功
-            initSpeechSynthesis();
+            // 再次检查并隐藏按钮
+            checkSpeechReadiness();
         } else {
             alert('您的浏览器不支持语音功能。');
         }
@@ -490,7 +468,6 @@
             }
             const data = await response.json();
             vocabulary = data;
-            console.log(`成功加载数据: ${src}, 包含 ${vocabulary.length} 个单词.`);
         } catch (error) {
             console.error(error);
             alert(error.message);
@@ -520,9 +497,6 @@
         loadWord(currentIndex);
         updateUndoButton();
         document.getElementById('levelSelector').disabled = isInReviewMode;
-
-        // 初始化语音
-        initSpeechSynthesis();
     }
 
     function loadWord(index) {
@@ -582,7 +556,6 @@
         
         history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentVocabArray[currentIndex].originalStatus : null });
         if (isInReviewMode) {
-            // 复习逻辑可在此处扩展
         } else {
             results[status].push(currentVocabArray[currentIndex]);
         }
@@ -672,15 +645,44 @@
         }
     });
 
-    window.onload = function() {
-        loadVocabulary('hsk4_data.json')
-            .then(() => {
-                init();
-            })
-            .catch(err => {
-                console.error('初始数据加载失败:', err);
+    // --- 修复的核心部分 ---
+    // 将语音检查移到页面完全加载后
+    async function checkSpeechReadiness() {
+        if ('speechSynthesis' in window) {
+            // 等待语音引擎准备好
+            await new Promise(resolve => {
+                const check = () => {
+                    if (speechSynthesis.getVoices().length > 0) {
+                        resolve();
+                    } else {
+                        setTimeout(check, 100);
+                    }
+                };
+                check();
             });
+
+            const voices = speechSynthesis.getVoices();
+            const hasChineseVoice = voices.some(v => v.lang.includes('zh'));
+            
+            if (!hasChineseVoice) {
+                speakRequestBtn.style.display = 'flex';
+            } else {
+                speakRequestBtn.style.display = 'none';
+            }
+        } else {
+            speakRequestBtn.style.display = 'flex';
+        }
+    }
+
+    window.onload = async function() {
+        // 首先加载词汇数据
+        await loadVocabulary('hsk4_data.json');
+        init();
+
+        // 数据加载完毕后，再检查语音功能
+        await checkSpeechReadiness();
     };
+    // --- 修复结束 ---
 
     function goToCard() {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
