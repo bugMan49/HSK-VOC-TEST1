@@ -367,10 +367,10 @@
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
         
         history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentVocabArray[currentIndex].originalStatus : null });
-        // 在复习模式下，结果记录到一个临时的“已掌握”列表，不影响原始结果
+        // 在复习模式下，结果记录到一个临时的"已掌握"列表，不影响原始结果
         if (isInReviewMode) {
             // 可以在这里添加逻辑，比如记录复习结果
-            // 例如，如果在复习中被标记为“认识”，则可以从下次复习中移除
+            // 例如，如果在复习中被标记为"认识"，则可以从下次复习中移除
         } else {
             results[status].push(currentVocabArray[currentIndex]);
         }
@@ -434,7 +434,7 @@
             return;
         }
         
-        // 构建复习词汇列表，合并“不认识”和“模糊”的单词，并附上它们的原始状态
+        // 构建复习词汇列表，合并"不认识"和"模糊"的单词，并附上它们的原始状态
         reviewVocabulary = [
             ...results.unknown.map(word => ({...word, originalStatus: 'unknown'})),
             ...results.fuzzy.map(word => ({...word, originalStatus: 'fuzzy'}))
@@ -502,6 +502,31 @@
         currentIndex = targetIndex;
         inputElement.value = ''; // 清空输入框
     }
+    
+    // 防止页面下拉刷新
+    let startY = 0;
+    document.addEventListener('touchstart', function(e) {
+        startY = e.touches[0].clientY;
+    }, { passive: false });
+
+    document.addEventListener('touchmove', function(e) {
+        // 获取当前触摸点位置
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+        
+        // 如果是从顶部向下拉且页面已经在顶部，则阻止默认行为
+        if (diff > 0 && window.scrollY <= 0) {
+            e.preventDefault();
+        }
+        // 如果页面不在顶部，允许正常滚动
+        else if (window.scrollY > 0) {
+            // 允许正常滚动
+        }
+        // 如果页面在底部且向上滑动，也允许正常滚动
+    }, { passive: false });
+
+    // 额外的保护措施：在页面容器上设置touch-action属性
+    document.querySelector('.container').style.touchAction = 'pan-y';
 </script>
 
 </body>
