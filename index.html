@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>HSK 词汇学习</title>
     <style>
-        /* styles.css 文件中 */
         /* 防误触下滑刷新 */
         body {
             overscroll-behavior-y: contain;
@@ -34,7 +33,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s ease-out;
             transform-style: preserve-3d;
         }
 
@@ -72,9 +71,20 @@
             background-color: var(--card-bg);
         }
 
-        /* 原有样式适配 */
-        .chinese { font-size: 3.5rem; font-weight: bold; margin: 0; color: #2c3e50; cursor: pointer; user-select: none; }
-        .chinese:hover { text-decoration: underline; }
+        /* 汉字样式 - 移除下划线 */
+        .chinese { 
+            font-size: 3.5rem; 
+            font-weight: bold; 
+            margin: 0; 
+            color: #2c3e50; 
+            cursor: pointer; 
+            user-select: none; 
+        }
+        /* 移除 hover 下划线效果 */
+        .chinese:hover { 
+            text-decoration: none; 
+        }
+
         .pinyin { font-size: 1.5rem; color: #7f8c8d; margin-top: 10px; margin-bottom: 20px; opacity: 1; transition: opacity 0.3s ease; }
         .pinyin.hidden { opacity: 0; }
         .english { font-size: 1.8rem; color: var(--primary-color); margin-top: 20px; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
@@ -133,6 +143,27 @@
         .flashcard-scene.show-hint-left .swipe-indicator.left,
         .flashcard-scene.show-hint-right .swipe-indicator.right {
             opacity: 1;
+        }
+
+        /* 复习模式状态标签 - 固定在卡片内部左上角 */
+        .review-status-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 10;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tag-unknown {
+            background-color: var(--danger-color);
+        }
+        .tag-fuzzy {
+            background-color: var(--warning-color);
+            color: #333;
         }
 
         /* 按钮容器样式 */
@@ -238,26 +269,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* 复习模式状态标签 */
-        .review-status-tag {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 3px 6px;
-            border-radius: 3px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            z-index: 10;
-            color: white;
-        }
-        .tag-unknown {
-            background-color: var(--danger-color);
-        }
-        .tag-fuzzy {
-            background-color: var(--warning-color);
-            color: #333;
-        }
-
         /* 移动端优化 */
         @media (max-width: 480px) {
             .flashcard-scene {
@@ -270,6 +281,13 @@
 
             .example-py {
                 font-size: 1.1rem;
+            }
+
+            .review-status-tag {
+                top: 10px;
+                left: 10px;
+                font-size: 0.7rem;
+                padding: 3px 6px;
             }
         }
     </style>
@@ -299,8 +317,9 @@
         <!-- 3D卡片结构 -->
         <div class="flashcard-scene" id="flashcardScene">
             <div class="flashcard-inner" id="flashcardInner">
-                <!-- 正面 - 恢复 onclick="toggleAnswer()" -->
+                <!-- 正面 -->
                 <div class="flashcard-face front" id="cardFront" onclick="toggleAnswer()">
+                    <!-- 复习状态标签 - 固定在卡片内部左上角 -->
                     <div id="review-status-tag" class="review-status-tag" style="display: none;">
                         <span id="tag-text">未知</span>
                     </div>
@@ -478,7 +497,6 @@
         }
     }
 
-    // 恢复：点击卡片显示/隐藏英文
     function toggleAnswer() {
         elEn.classList.toggle('show');
     }
