@@ -92,11 +92,16 @@
         .english.show { opacity: 1; transform: translateY(0); }
         .hint-text { font-size: 0.8rem; color: #bdc3c7; margin-top: 30px; }
 
-        /* 背面例句样式 - 只显示例句 */
+        /* 背面例句样式 - 可点击朗读 */
         .example-section {
             width: 100%;
             padding: 0 20px;
             text-align: center;
+            cursor: pointer;
+        }
+
+        .example-section:active {
+            transform: scale(0.98);
         }
 
         .example-label {
@@ -105,6 +110,7 @@
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            cursor: default;
         }
 
         .example-cn {
@@ -113,12 +119,36 @@
             margin-bottom: 20px;
             line-height: 1.5;
             font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s;
+        }
+
+        .example-cn:hover {
+            color: var(--primary-color);
+        }
+
+        .example-cn:active {
+            transform: scale(0.98);
         }
 
         .example-py {
             font-size: 1.3rem;
             color: #7f8c8d;
             line-height: 1.4;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .example-py:hover {
+            color: #95a5a6;
+        }
+
+        .example-hint {
+            font-size: 0.75rem;
+            color: #bdc3c7;
+            margin-top: 30px;
+            cursor: default;
         }
 
         /* 滑动指示器 - 只在正面显示 */
@@ -332,12 +362,13 @@
                     <div class="swipe-indicator right">›</div>
                 </div>
 
-                <!-- 背面 - 只显示例句 -->
-                <div class="flashcard-face back" id="cardBack">
+                <!-- 背面 - 点击例句朗读 -->
+                <div class="flashcard-face back" id="cardBack" onclick="speakExample(event)">
                     <div class="example-section">
                         <div class="example-label">例句</div>
                         <div class="example-cn" id="example-cn">例句加载中...</div>
                         <div class="example-py" id="example-py">...</div>
+                        <div class="example-hint">点击朗读例句</div>
                     </div>
                 </div>
             </div>
@@ -502,18 +533,34 @@
         elEn.classList.toggle('show');
     }
 
-    function speakAndTogglePinyin(event) {
-        event.stopPropagation();
-        const textToSpeak = elCn.textContent;
+    // 通用朗读函数 - 复用核心逻辑
+    function speakText(text, rate = 0.8) {
+        if (!text || !text.trim()) return;
         if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            // 取消之前的朗读
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
-            utterance.rate = currentSpeechRate;
+            utterance.rate = rate;
             speechSynthesis.speak(utterance);
         } else {
             alert('您的浏览器不支持语音合成功能。');
         }
+    }
+
+    // 点击汉字：发音并切换拼音
+    function speakAndTogglePinyin(event) {
+        event.stopPropagation();
+        speakText(elCn.textContent, currentSpeechRate);
         togglePinyin();
+    }
+
+    // 点击例句：仅发音（不复用拼音切换逻辑）
+    function speakExample(event) {
+        // 阻止事件冒泡，防止触发卡片翻转
+        event.stopPropagation();
+        // 朗读例句
+        speakText(elExampleCn.textContent, currentSpeechRate);
     }
 
     function togglePinyin() {
@@ -673,13 +720,8 @@
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 e.preventDefault();
 
-                // 修复：左滑时向左翻转（负角度），右滑时向右翻转（正角度）
-                // 当前在正面（0度）：左滑 -> 负角度（向左翻转）
-                // 当前在背面（-180度）：右滑 -> 趋向0度（向右翻转回来）
                 let baseRotation = isCardFlipped ? -180 : 0;
-                // 根据滑动方向调整：左滑（deltaX < 0）应该让卡片向左转（负角度）
                 const rotation = baseRotation + (deltaX * 0.3);
-                // 限制旋转范围
                 const clampedRotation = Math.max(-210, Math.min(30, rotation));
                 flashcardInner.style.transform = `rotateY(${clampedRotation}deg)`;
 
@@ -709,15 +751,11 @@
                            (Math.abs(deltaX) > 30 && deltaTime < TIME_THRESHOLD);
 
             if (isSwipe) {
-                // 修复：左滑（deltaX < 0）-> 向左翻转显示背面
-                // 右滑（deltaX > 0）-> 向右翻转返回正面
                 if (deltaX < 0 && !isCardFlipped) {
-                    // 左滑：向左翻转（逆时针，负角度）
                     flashcardInner.classList.add('is-flipped');
                     flashcardInner.style.transform = '';
                     isCardFlipped = true;
                 } else if (deltaX > 0 && isCardFlipped) {
-                    // 右滑：向右翻转（顺时针，趋向0度）
                     flashcardInner.classList.remove('is-flipped');
                     flashcardInner.style.transform = '';
                     isCardFlipped = false;
