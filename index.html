@@ -37,8 +37,9 @@
             transform-style: preserve-3d;
         }
 
+        /* 向左翻转（逆时针）显示背面 */
         .flashcard-inner.is-flipped {
-            transform: rotateY(180deg);
+            transform: rotateY(-180deg);
         }
 
         .flashcard-inner.dragging {
@@ -66,8 +67,9 @@
             z-index: 2;
         }
 
+        /* 背面初始状态 - 需要先向左旋转才能正确显示 */
         .flashcard-face.back {
-            transform: rotateY(180deg);
+            transform: rotateY(-180deg);
             background-color: var(--card-bg);
         }
 
@@ -80,7 +82,6 @@
             cursor: pointer; 
             user-select: none; 
         }
-        /* 移除 hover 下划线效果 */
         .chinese:hover { 
             text-decoration: none; 
         }
@@ -672,9 +673,15 @@
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 e.preventDefault();
 
-                let baseRotation = isCardFlipped ? 180 : 0;
-                const rotation = baseRotation + Math.max(-30, Math.min(30, deltaX * 0.3));
-                flashcardInner.style.transform = `rotateY(${rotation}deg)`;
+                // 修复：左滑时向左翻转（负角度），右滑时向右翻转（正角度）
+                // 当前在正面（0度）：左滑 -> 负角度（向左翻转）
+                // 当前在背面（-180度）：右滑 -> 趋向0度（向右翻转回来）
+                let baseRotation = isCardFlipped ? -180 : 0;
+                // 根据滑动方向调整：左滑（deltaX < 0）应该让卡片向左转（负角度）
+                const rotation = baseRotation + (deltaX * 0.3);
+                // 限制旋转范围
+                const clampedRotation = Math.max(-210, Math.min(30, rotation));
+                flashcardInner.style.transform = `rotateY(${clampedRotation}deg)`;
 
                 if (deltaX > 20) {
                     flashcardScene.classList.add('show-hint-right');
@@ -702,11 +709,15 @@
                            (Math.abs(deltaX) > 30 && deltaTime < TIME_THRESHOLD);
 
             if (isSwipe) {
+                // 修复：左滑（deltaX < 0）-> 向左翻转显示背面
+                // 右滑（deltaX > 0）-> 向右翻转返回正面
                 if (deltaX < 0 && !isCardFlipped) {
+                    // 左滑：向左翻转（逆时针，负角度）
                     flashcardInner.classList.add('is-flipped');
                     flashcardInner.style.transform = '';
                     isCardFlipped = true;
                 } else if (deltaX > 0 && isCardFlipped) {
+                    // 右滑：向右翻转（顺时针，趋向0度）
                     flashcardInner.classList.remove('is-flipped');
                     flashcardInner.style.transform = '';
                     isCardFlipped = false;
