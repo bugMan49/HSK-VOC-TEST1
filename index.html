@@ -299,8 +299,8 @@
         <!-- 3D卡片结构 -->
         <div class="flashcard-scene" id="flashcardScene">
             <div class="flashcard-inner" id="flashcardInner">
-                <!-- 正面 -->
-                <div class="flashcard-face front" id="cardFront">
+                <!-- 正面 - 恢复 onclick="toggleAnswer()" -->
+                <div class="flashcard-face front" id="cardFront" onclick="toggleAnswer()">
                     <div id="review-status-tag" class="review-status-tag" style="display: none;">
                         <span id="tag-text">未知</span>
                     </div>
@@ -371,7 +371,7 @@
     let currentSpeechRate = 0.8;
     let isInReviewMode = false;
     let reviewVocabulary = [];
-    let isCardFlipped = false; // 跟踪卡片翻转状态
+    let isCardFlipped = false;
 
     const elCn = document.getElementById('word-cn');
     const elPy = document.getElementById('word-py');
@@ -461,7 +461,6 @@
             elPy.classList.add('hidden');
         }
 
-        // 重置卡片到正面状态
         flashcardInner.classList.remove('is-flipped');
         isCardFlipped = false;
 
@@ -479,6 +478,7 @@
         }
     }
 
+    // 恢复：点击卡片显示/隐藏英文
     function toggleAnswer() {
         elEn.classList.toggle('show');
     }
@@ -511,7 +511,6 @@
 
         history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentVocabArray[currentIndex].originalStatus : null });
         if (isInReviewMode) {
-            // 复习模式逻辑
         } else {
             results[status].push(currentVocabArray[currentIndex]);
         }
@@ -595,7 +594,6 @@
         updateUndoButton();
     }
 
-    // 滑动手势检测 - 修复返回动画
     function initSwipeGesture() {
         let startX = 0;
         let startY = 0;
@@ -656,7 +654,6 @@
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 e.preventDefault();
 
-                // 根据当前翻转状态调整旋转
                 let baseRotation = isCardFlipped ? 180 : 0;
                 const rotation = baseRotation + Math.max(-30, Math.min(30, deltaX * 0.3));
                 flashcardInner.style.transform = `rotateY(${rotation}deg)`;
@@ -688,21 +685,17 @@
 
             if (isSwipe) {
                 if (deltaX < 0 && !isCardFlipped) {
-                    // 左滑且当前是正面 -> 翻转到背面
                     flashcardInner.classList.add('is-flipped');
                     flashcardInner.style.transform = '';
                     isCardFlipped = true;
                 } else if (deltaX > 0 && isCardFlipped) {
-                    // 右滑且当前是背面 -> 翻转回正面
                     flashcardInner.classList.remove('is-flipped');
                     flashcardInner.style.transform = '';
                     isCardFlipped = false;
                 } else {
-                    // 其他情况恢复原状
                     flashcardInner.style.transform = '';
                 }
             } else {
-                // 不是有效滑动，恢复原状
                 flashcardInner.style.transform = '';
             }
 
