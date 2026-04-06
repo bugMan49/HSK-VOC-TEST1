@@ -1,152 +1,1052 @@
 [
-    {"cn": "您", "py": "nín", "en": "you"},
-    {"cn": "它", "py": "tā", "en": "it"},
-    {"cn": "大家", "py": "dàjiā", "en": "everyone"},
-    {"cn": "每", "py": "měi", "en": "every, each"},
-    {"cn": "为什么", "py": "wèishénme", "en": "why"},
-    {"cn": "零", "py": "líng", "en": "zero"},
-    {"cn": "两", "py": "liǎng", "en": "two"},
-    {"cn": "百", "py": "bǎi", "en": "hundred"},
-    {"cn": "千", "py": "qiān", "en": "thousand"},
-    {"cn": "第一", "py": "dìyī", "en": "first"},
-    {"cn": "次", "py": "cì", "en": "times"},
-    {"cn": "件", "py": "jiàn", "en": "piece"},
-    {"cn": "别", "py": "bié", "en": "do not"},
-    {"cn": "非常", "py": "fēicháng", "en": "very"},
-    {"cn": "也", "py": "yě", "en": "also"},
-    {"cn": "还", "py": "hái", "en": "still"},
-    {"cn": "最", "py": "zuì", "en": "the most"},
-    {"cn": "真", "py": "zhēn", "en": "really"},
-    {"cn": "正在", "py": "zhèngzài", "en": "be being"},
-    {"cn": "已经", "py": "yǐjīng", "en": "already"},
-    {"cn": "一起", "py": "yìqǐ", "en": "together"},
-    {"cn": "再", "py": "zài", "en": "again"},
-    {"cn": "就", "py": "jiǜ", "en": "at once"},
-    {"cn": "因为……所以……", "py": "yīnwèi...suǒyǐ…", "en": "because…so…"},
-    {"cn": "虽然……但是……", "py": "suīrán…dànshì…", "en": "although… but…"},
-    {"cn": "从", "py": "cóng", "en": "from"},
-    {"cn": "比", "py": "bǐ", "en": "comparing to"},
-    {"cn": "往", "py": "wǎng", "en": "toward, to"},
-    {"cn": "离", "py": "lí", "en": "indicate the distance between two objects"},
-    {"cn": "得", "py": "de", "en": ""},
-    {"cn": "着", "py": "zhe", "en": ""},
-    {"cn": "过", "py": "guò", "en": ""},
-    {"cn": "吧", "py": "ba", "en": ""},
-    {"cn": "机场", "py": "jīchǎng", "en": "airport"},
-    {"cn": "教室", "py": "jiàoshì", "en": "classroom"},
-    {"cn": "房间", "py": "fángjiān", "en": "room"},
-    {"cn": "路", "py": "lù", "en": "road"},
-    {"cn": "左边", "py": "zuǒbiān", "en": "left"},
-    {"cn": "右边", "py": "yòubiān", "en": "right"},
-    {"cn": "外", "py": "wài", "en": "outside"},
-    {"cn": "旁边", "py": "pángbiān", "en": "side"},
-    {"cn": "一下", "py": "yīxià", "en": "in a short while"},
-    {"cn": "早上", "py": "zǎoshàng", "en": "morning"},
-    {"cn": "晚上", "py": "wǎnshàng", "en": "night"},
-    {"cn": "小时", "py": "xiǎoshí", "en": "hour"},
-    {"cn": "时间", "py": "shíjiān", "en": "time"},
-    {"cn": "去年", "py": "qùnián", "en": "last year"},
-    {"cn": "日", "py": "rì", "en": "date"},
-    {"cn": "生日", "py": "shēngrì", "en": "birthday"},
-    {"cn": "哥哥", "py": "gēge", "en": "older brother"},
-    {"cn": "姐姐", "py": "jiějie", "en": "older sister"},
-    {"cn": "弟弟", "py": "dìdi", "en": "younger brother"},
-    {"cn": "妹妹", "py": "mèimei", "en": "younger sister"},
-    {"cn": "丈夫", "py": "zhàngfu", "en": "husband"},
-    {"cn": "妻子", "py": "qīzi", "en": "wife"},
-    {"cn": "孩子", "py": "háizi", "en": "child"},
-    {"cn": "男人", "py": "nánrén", "en": "man"},
-    {"cn": "女人", "py": "nǚrén", "en": "woman"},
-    {"cn": "服务员", "py": "fúwùyuán", "en": "waiter"},
-    {"cn": "鱼", "py": "yú", "en": "fish"},
-    {"cn": "羊肉", "py": "yángròu", "en": "mutton"},
-    {"cn": "牛奶", "py": "niúnǎi", "en": "milk"},
-    {"cn": "鸡蛋", "py": "jīdàn", "en": "egg"},
-    {"cn": "西瓜", "py": "xīguā", "en": "watermelon"},
-    {"cn": "咖啡", "py": "kāfēi", "en": "coffee"},
-    {"cn": "雪", "py": "xuě", "en": "snow"},
-    {"cn": "药", "py": "yào", "en": "medicine"},
-    {"cn": "手机", "py": "shǒujī", "en": "cellphone"},
-    {"cn": "手表", "py": "shǒubiǎo", "en": "watch"},
-    {"cn": "眼睛", "py": "yǎnjīng", "en": "eye"},
-    {"cn": "身体", "py": "shēntǐ", "en": "body"},
-    {"cn": "公共汽车", "py": "gōnggòngqìchē", "en": "bus"},
-    {"cn": "报纸", "py": "bàozhǐ", "en": "newspaper"},
-    {"cn": "门", "py": "mén", "en": "door"},
-    {"cn": "题", "py": "tí", "en": "topic, item"},
-    {"cn": "课", "py": "kè", "en": "lesson"},
-    {"cn": "姓", "py": "xìng", "en": "surname"},
-    {"cn": "问题", "py": "wèntí", "en": "question"},
-    {"cn": "事情", "py": "shìqing", "en": "matter"},
-    {"cn": "考试", "py": "kǎoshì", "en": "exam"},
-    {"cn": "票", "py": "piào", "en": "ticket"},
-    {"cn": "意思", "py": "yìsi", "en": "meaning"},
-    {"cn": "颜色", "py": "yánsè", "en": "color"},
-    {"cn": "铅笔", "py": "qiánbǐ", "en": "pencil"},
-    {"cn": "面条", "py": "miàntiáo", "en": "noodle"},
-    {"cn": "火车站", "py": "huǒchēzhàn", "en": "train station"},
-    {"cn": "公司", "py": "gōngsī", "en": "company"},
-    {"cn": "宾馆", "py": "bīngguǎn", "en": "hotel"},
-    {"cn": "说话", "py": "shuōhuà", "en": "talk"},
-    {"cn": "卖", "py": "mài", "en": "sell"},
-    {"cn": "问", "py": "wèn", "en": "ask"},
-    {"cn": "走", "py": "zǒu", "en": "walk"},
-    {"cn": "进", "py": "jìn", "en": "enter"},
-    {"cn": "出", "py": "chū", "en": "come"},
-    {"cn": "跑步", "py": "pǎobù", "en": "run"},
-    {"cn": "到", "py": "dào", "en": "arrive"},
-    {"cn": "穿", "py": "chuān", "en": "wear"},
-    {"cn": "洗", "py": "xǐ", "en": "wash"},
-    {"cn": "给", "py": "gěi", "en": "give"},
-    {"cn": "找", "py": "zhǎo", "en": "find"},
-    {"cn": "懂", "py": "dǒng", "en": "understand"},
-    {"cn": "笑", "py": "xiào", "en": "smile"},
-    {"cn": "告诉", "py": "gàosù", "en": "tell"},
-    {"cn": "准备", "py": "zhǔnbèi", "en": "prepare"},
-    {"cn": "开始", "py": "kāishǐ", "en": "begin"},
-    {"cn": "介绍", "py": "jièshào", "en": "introduce"},
-    {"cn": "帮助", "py": "bāngzhù", "en": "help"},
-    {"cn": "玩", "py": "wán", "en": "play"},
-    {"cn": "送", "py": "sòng", "en": "present"},
-    {"cn": "等", "py": "děng", "en": "wait"},
-    {"cn": "让", "py": "ràng", "en": "let"},
-    {"cn": "起床", "py": "qǐchuáng", "en": "get up"},
-    {"cn": "唱歌", "py": "chànggē", "en": "sing"},
-    {"cn": "跳舞", "py": "tiàowǔ", "en": "dance"},
-    {"cn": "旅游", "py": "lǚyóu", "en": "travel"},
-    {"cn": "上班", "py": "shàngbān", "en": "be on duty"},
-    {"cn": "生病", "py": "shēngbìng", "en": "get ill, get sick"},
-    {"cn": "休息", "py": "xiūxi", "en": "rest"},
-    {"cn": "运动", "py": "yùndòng", "en": "exercise"},
-    {"cn": "游泳", "py": "yóuyǒng", "en": "swim"},
-    {"cn": "踢足球", "py": "tīzúqiú", "en": "play footbal"},
-    {"cn": "打篮球", "py": "dǎlánqiú", "en": "play basketball"},
-    {"cn": "完", "py": "wán", "en": "finish"},
-    {"cn": "觉得", "py": "juédé", "en": "think"},
-    {"cn": "知道", "py": "zhīdao", "en": "know"},
-    {"cn": "希望", "py": "xīwàng", "en": "hope"},
-    {"cn": "可以", "py": "kěyǐ", "en": "can"},
-    {"cn": "要", "py": "yào", "en": "want"},
-    {"cn": "可能", "py": "kěnéng", "en": "may"},
-    {"cn": "高", "py": "gāo", "en": "tall"},
-    {"cn": "红", "py": "hóng", "en": "red"},
-    {"cn": "白", "py": "bái", "en": "white"},
-    {"cn": "黑", "py": "hēi", "en": "black"},
-    {"cn": "忙", "py": "máng", "en": "busy"},
-    {"cn": "快", "py": "kuài", "en": "fast"},
-    {"cn": "慢", "py": "màn", "en": "slow"},
-    {"cn": "远", "py": "yuǎn", "en": "far"},
-    {"cn": "近", "py": "jìn", "en": "close"},
-    {"cn": "好吃", "py": "hǎochī", "en": "delicious"},
-    {"cn": "累", "py": "lèi", "en": "tired"},
-    {"cn": "长", "py": "cháng", "en": "long"},
-    {"cn": "新", "py": "xīn", "en": "new"},
-    {"cn": "贵", "py": "guì", "en": "expensive"},
-    {"cn": "便宜", "py": "piányi", "en": "cheap"},
-    {"cn": "晴", "py": "qíng", "en": "fine"},
-    {"cn": "阴", "py": "yīn", "en": "cloudy"},
-    {"cn": "错", "py": "cuò", "en": "wrong"},
-    {"cn": "快乐", "py": "kuàilè", "en": "happy"},
-    {"cn": "对", "py": "duì", "en": "to"},
-    {"cn": "对", "py": "duì", "en": "right"}
+  {
+    "cn": "您",
+    "py": "nín",
+    "en": "you",
+    "example": "您好，请问有什么可以帮您？",
+    "example_py": "Nín hǎo, qǐngwèn yǒu shénme kěyǐ bāng nín?"
+  },
+  {
+    "cn": "它",
+    "py": "tā",
+    "en": "it",
+    "example": "这是一只猫，它很可爱。",
+    "example_py": "Zhè shì yī zhī māo, tā hěn kě'ài."
+  },
+  {
+    "cn": "大家",
+    "py": "dàjiā",
+    "en": "everyone",
+    "example": "大家好，我是新来的老师。",
+    "example_py": "Dàjiā hǎo, wǒ shì xīn lái de lǎoshī."
+  },
+  {
+    "cn": "每",
+    "py": "měi",
+    "en": "every, each",
+    "example": "我每天早上七点起床。",
+    "example_py": "Wǒ měitiān zǎoshàng qī diǎn qǐchuáng."
+  },
+  {
+    "cn": "为什么",
+    "py": "wèishénme",
+    "en": "why",
+    "example": "你为什么不来上课？",
+    "example_py": "Nǐ wèishénme bù lái shàngkè?"
+  },
+  {
+    "cn": "零",
+    "py": "líng",
+    "en": "zero",
+    "example": "今天温度是零度。",
+    "example_py": "Jīntiān wēndù shì líng dù."
+  },
+  {
+    "cn": "两",
+    "py": "liǎng",
+    "en": "two",
+    "example": "我有两个哥哥。",
+    "example_py": "Wǒ yǒu liǎng gè gēge."
+  },
+  {
+    "cn": "百",
+    "py": "bǎi",
+    "en": "hundred",
+    "example": "这本书要一百块钱。",
+    "example_py": "Zhè běn shū yào yībǎi kuài qián."
+  },
+  {
+    "cn": "千",
+    "py": "qiān",
+    "en": "thousand",
+    "example": "这个城市有一千万人口。",
+    "example_py": "Zhège chéngshì yǒu yīqiān wàn rénkǒu."
+  },
+  {
+    "cn": "第一",
+    "py": "dìyī",
+    "en": "first",
+    "example": "我是第一个到教室的。",
+    "example_py": "Wǒ shì dì yī gè dào jiàoshì de."
+  },
+  {
+    "cn": "次",
+    "py": "cì",
+    "en": "times",
+    "example": "这是我第一次来中国。",
+    "example_py": "Zhè shì wǒ dì yī cì lái Zhōngguó."
+  },
+  {
+    "cn": "件",
+    "py": "jiàn",
+    "en": "piece",
+    "example": "我买了一件衣服。",
+    "example_py": "Wǒ mǎi le yī jiàn yīfu."
+  },
+  {
+    "cn": "别",
+    "py": "bié",
+    "en": "do not",
+    "example": "别担心，一切都会好的。",
+    "example_py": "Bié dānxīn, yīqiè dōu huì hǎo de."
+  },
+  {
+    "cn": "非常",
+    "py": "fēicháng",
+    "en": "very",
+    "example": "这道菜非常好吃。",
+    "example_py": "Zhè dào cài fēicháng hǎochī."
+  },
+  {
+    "cn": "也",
+    "py": "yě",
+    "en": "also",
+    "example": "我也喜欢喝咖啡。",
+    "example_py": "Wǒ yě xǐhuan hē kāfēi."
+  },
+  {
+    "cn": "还",
+    "py": "hái",
+    "en": "still",
+    "example": "他还在学校学习。",
+    "example_py": "Tā hái zài xuéxiào xuéxí."
+  },
+  {
+    "cn": "最",
+    "py": "zuì",
+    "en": "the most",
+    "example": "这是我最喜欢的书。",
+    "example_py": "Zhè shì wǒ zuì xǐhuan de shū."
+  },
+  {
+    "cn": "真",
+    "py": "zhēn",
+    "en": "really",
+    "example": "今天的天气真好！",
+    "example_py": "Jīntiān de tiānqì zhēn hǎo!"
+  },
+  {
+    "cn": "正在",
+    "py": "zhèngzài",
+    "en": "be being",
+    "example": "他正在教室里上课。",
+    "example_py": "Tā zhèngzài jiàoshì lǐ shàngkè."
+  },
+  {
+    "cn": "已经",
+    "py": "yǐjīng",
+    "en": "already",
+    "example": "我已经吃过早饭了。",
+    "example_py": "Wǒ yǐjīng chī guo zǎofàn le."
+  },
+  {
+    "cn": "一起",
+    "py": "yìqǐ",
+    "en": "together",
+    "example": "我们一起去看电影吧。",
+    "example_py": "Wǒmen yīqǐ qù kàn diànyǐng ba."
+  },
+  {
+    "cn": "再",
+    "py": "zài",
+    "en": "again",
+    "example": "请再说一遍。",
+    "example_py": "Qǐng zài shuō yī biàn."
+  },
+  {
+    "cn": "就",
+    "py": "jiù",
+    "en": "at once",
+    "example": "我马上就回来。",
+    "example_py": "Wǒ mǎshàng jiù huílái."
+  },
+  {
+    "cn": "因为……所以……",
+    "py": "yīnwèi...suǒyǐ…",
+    "en": "because…so…",
+    "example": "因为下雨，所以我不出去。",
+    "example_py": "Yīnwèi xiàyǔ, suǒyǐ wǒ bù chūqù."
+  },
+  {
+    "cn": "虽然……但是……",
+    "py": "suīrán…dànshì…",
+    "en": "although… but…",
+    "example": "虽然我很累，但是还要工作。",
+    "example_py": "Suīrán wǒ hěn lèi, dànshì hái yào gōngzuò."
+  },
+  {
+    "cn": "从",
+    "py": "cóng",
+    "en": "from",
+    "example": "我从北京来。",
+    "example_py": "Wǒ cóng Běijīng lái."
+  },
+  {
+    "cn": "比",
+    "py": "bǐ",
+    "en": "comparing to",
+    "example": "我比你高。",
+    "example_py": "Wǒ bǐ nǐ gāo."
+  },
+  {
+    "cn": "往",
+    "py": "wǎng",
+    "en": "toward, to",
+    "example": "请往前走。",
+    "example_py": "Qǐng wǎng qián zǒu."
+  },
+  {
+    "cn": "离",
+    "py": "lí",
+    "en": "indicate the distance between two objects",
+    "example": "我家离学校很近。",
+    "example_py": "Wǒ jiā lí xuéxiào hěn jìn."
+  },
+  {
+    "cn": "得",
+    "py": "de",
+    "en": "",
+    "example": "他跑得很快。",
+    "example_py": "Tā pǎo de hěn kuài."
+  },
+  {
+    "cn": "着",
+    "py": "zhe",
+    "en": "",
+    "example": "他穿着红色的衣服。",
+    "example_py": "Tā chuān zhe hóngsè de yīfu."
+  },
+  {
+    "cn": "过",
+    "py": "guò",
+    "en": "",
+    "example": "我去过中国。",
+    "example_py": "Wǒ qù guo Zhōngguó."
+  },
+  {
+    "cn": "吧",
+    "py": "ba",
+    "en": "",
+    "example": "我们走吧！",
+    "example_py": "Wǒmen zǒu ba!"
+  },
+  {
+    "cn": "机场",
+    "py": "jīchǎng",
+    "en": "airport",
+    "example": "明天我要去机场接朋友。",
+    "example_py": "Míngtiān wǒ yào qù jīchǎng jiē péngyǒu."
+  },
+  {
+    "cn": "教室",
+    "py": "jiàoshì",
+    "en": "classroom",
+    "example": "教室里有二十个学生。",
+    "example_py": "Jiàoshì lǐ yǒu èrshí gè xuéshēng."
+  },
+  {
+    "cn": "房间",
+    "py": "fángjiān",
+    "en": "room",
+    "example": "我的房间很大。",
+    "example_py": "Wǒ de fángjiān hěn dà."
+  },
+  {
+    "cn": "路",
+    "py": "lù",
+    "en": "road",
+    "example": "这条路很长。",
+    "example_py": "Zhè tiáo lù hěn cháng."
+  },
+  {
+    "cn": "左边",
+    "py": "zuǒbiān",
+    "en": "left",
+    "example": "学校在银行的左边。",
+    "example_py": "Xuéxiào zài yínháng de zuǒbiān."
+  },
+  {
+    "cn": "右边",
+    "py": "yòubiān",
+    "en": "right",
+    "example": "我家在商店的右边。",
+    "example_py": "Wǒ jiā zài shāngdiàn de yòubiān."
+  },
+  {
+    "cn": "外",
+    "py": "wài",
+    "en": "outside",
+    "example": "请不要在外面抽烟。",
+    "example_py": "Qǐng bùyào zài wàimiàn chōuyān."
+  },
+  {
+    "cn": "旁边",
+    "py": "pángbiān",
+    "en": "side",
+    "example": "我坐在老师的旁边。",
+    "example_py": "Wǒ zuò zài lǎoshī de pángbiān."
+  },
+  {
+    "cn": "一下",
+    "py": "yīxià",
+    "en": "in a short while",
+    "example": "请等一下。",
+    "example_py": "Qǐng děng yīxià."
+  },
+  {
+    "cn": "早上",
+    "py": "zǎoshàng",
+    "en": "morning",
+    "example": "我每天早上跑步。",
+    "example_py": "Wǒ měitiān zǎoshàng pǎobù."
+  },
+  {
+    "cn": "晚上",
+    "py": "wǎnshàng",
+    "en": "night",
+    "example": "我晚上喜欢看电视。",
+    "example_py": "Wǒ wǎnshàng xǐhuan kàn diànshì."
+  },
+  {
+    "cn": "小时",
+    "py": "xiǎoshí",
+    "en": "hour",
+    "example": "我学习了两小时。",
+    "example_py": "Wǒ xuéxí le liǎng xiǎoshí."
+  },
+  {
+    "cn": "时间",
+    "py": "shíjiān",
+    "en": "time",
+    "example": "现在是什么时间？",
+    "example_py": "Xiànzài shì shénme shíjiān?"
+  },
+  {
+    "cn": "去年",
+    "py": "qùnián",
+    "en": "last year",
+    "example": "去年我去过上海。",
+    "example_py": "Qùnián wǒ qù guo Shànghǎi."
+  },
+  {
+    "cn": "日",
+    "py": "rì",
+    "en": "date",
+    "example": "今天是六月一日。",
+    "example_py": "Jīntiān shì liù yuè yī rì."
+  },
+  {
+    "cn": "生日",
+    "py": "shēngrì",
+    "en": "birthday",
+    "example": "明天是我的生日。",
+    "example_py": "Míngtiān shì wǒ de shēngrì."
+  },
+  {
+    "cn": "哥哥",
+    "py": "gēge",
+    "en": "older brother",
+    "example": "我的哥哥是医生。",
+    "example_py": "Wǒ de gēge shì yīshēng."
+  },
+  {
+    "cn": "姐姐",
+    "py": "jiějie",
+    "en": "older sister",
+    "example": "她的姐姐很漂亮。",
+    "example_py": "Tā de jiějie hěn piàoliang."
+  },
+  {
+    "cn": "弟弟",
+    "py": "dìdi",
+    "en": "younger brother",
+    "example": "我有一个弟弟。",
+    "example_py": "Wǒ yǒu yī gè dìdi."
+  },
+  {
+    "cn": "妹妹",
+    "py": "mèimei",
+    "en": "younger sister",
+    "example": "她的妹妹在上小学。",
+    "example_py": "Tā de mèimei zài shàng xiǎoxué."
+  },
+  {
+    "cn": "丈夫",
+    "py": "zhàngfu",
+    "en": "husband",
+    "example": "她的丈夫是老师。",
+    "example_py": "Tā de zhàngfu shì lǎoshī."
+  },
+  {
+    "cn": "妻子",
+    "py": "qīzi",
+    "en": "wife",
+    "example": "他的妻子很温柔。",
+    "example_py": "Tā de qīzi hěn wēnróu."
+  },
+  {
+    "cn": "孩子",
+    "py": "háizi",
+    "en": "child",
+    "example": "他们有两个孩子。",
+    "example_py": "Tāmen yǒu liǎng gè háizi."
+  },
+  {
+    "cn": "男人",
+    "py": "nánrén",
+    "en": "man",
+    "example": "那个男人是我的朋友。",
+    "example_py": "Nàge nánrén shì wǒ de péngyǒu."
+  },
+  {
+    "cn": "女人",
+    "py": "nǚrén",
+    "en": "woman",
+    "example": "这个女人是我的老师。",
+    "example_py": "Zhège nǚrén shì wǒ de lǎoshī."
+  },
+  {
+    "cn": "服务员",
+    "py": "fúwùyuán",
+    "en": "waiter",
+    "example": "服务员，请给我一杯咖啡。",
+    "example_py": "Fúwùyuán, qǐng gěi wǒ yī bēi kāfēi."
+  },
+  {
+    "cn": "鱼",
+    "py": "yú",
+    "en": "fish",
+    "example": "我喜欢吃鱼。",
+    "example_py": "Wǒ xǐhuan chī yú."
+  },
+  {
+    "cn": "羊肉",
+    "py": "yángròu",
+    "en": "mutton",
+    "example": "我不喜欢吃羊肉。",
+    "example_py": "Wǒ bù xǐhuan chī yángròu."
+  },
+  {
+    "cn": "牛奶",
+    "py": "niúnǎi",
+    "en": "milk",
+    "example": "我每天早上喝牛奶。",
+    "example_py": "Wǒ měitiān zǎoshàng hē niúnǎi."
+  },
+  {
+    "cn": "鸡蛋",
+    "py": "jīdàn",
+    "en": "egg",
+    "example": "我吃了一个鸡蛋。",
+    "example_py": "Wǒ chī le yī gè jīdàn."
+  },
+  {
+    "cn": "西瓜",
+    "py": "xīguā",
+    "en": "watermelon",
+    "example": "夏天我喜欢吃西瓜。",
+    "example_py": "Xiàtiān wǒ xǐhuan chī xīguā."
+  },
+  {
+    "cn": "咖啡",
+    "py": "kāfēi",
+    "en": "coffee",
+    "example": "我要一杯咖啡。",
+    "example_py": "Wǒ yào yī bēi kāfēi."
+  },
+  {
+    "cn": "雪",
+    "py": "xuě",
+    "en": "snow",
+    "example": "昨天下雪了。",
+    "example_py": "Zuótiān xiàxuě le."
+  },
+  {
+    "cn": "药",
+    "py": "yào",
+    "en": "medicine",
+    "example": "我生病了，需要吃药。",
+    "example_py": "Wǒ shēngbìng le, xūyào chī yào."
+  },
+  {
+    "cn": "手机",
+    "py": "shǒujī",
+    "en": "cellphone",
+    "example": "我的手机没电了。",
+    "example_py": "Wǒ de shǒujī méi diàn le."
+  },
+  {
+    "cn": "手表",
+    "py": "shǒubiǎo",
+    "en": "watch",
+    "example": "我买了一块新手表。",
+    "example_py": "Wǒ mǎi le yī kuài xīn shǒubiǎo."
+  },
+  {
+    "cn": "眼睛",
+    "py": "yǎnjīng",
+    "en": "eye",
+    "example": "她的眼睛很大。",
+    "example_py": "Tā de yǎnjīng hěn dà."
+  },
+  {
+    "cn": "身体",
+    "py": "shēntǐ",
+    "en": "body",
+    "example": "我每天都锻炼身体。",
+    "example_py": "Wǒ měitiān dōu duànliàn shēntǐ."
+  },
+  {
+    "cn": "公共汽车",
+    "py": "gōnggòngqìchē",
+    "en": "bus",
+    "example": "我坐公共汽车去学校。",
+    "example_py": "Wǒ zuò gōnggòngqìchē qù xuéxiào."
+  },
+  {
+    "cn": "报纸",
+    "py": "bàozhǐ",
+    "en": "newspaper",
+    "example": "我爷爷每天看报纸。",
+    "example_py": "Wǒ yéye měitiān kàn bàozhǐ."
+  },
+  {
+    "cn": "门",
+    "py": "mén",
+    "en": "door",
+    "example": "请把门关上。",
+    "example_py": "Qǐng bǎ mén guān shàng."
+  },
+  {
+    "cn": "题",
+    "py": "tí",
+    "en": "topic, item",
+    "example": "这道题很难。",
+    "example_py": "Zhè dào tí hěn nán."
+  },
+  {
+    "cn": "课",
+    "py": "kè",
+    "en": "lesson",
+    "example": "我今天有三节课。",
+    "example_py": "Wǒ jīntiān yǒu sān jié kè."
+  },
+  {
+    "cn": "姓",
+    "py": "xìng",
+    "en": "surname",
+    "example": "你姓什么？",
+    "example_py": "Nǐ xìng shénme?"
+  },
+  {
+    "cn": "问题",
+    "py": "wèntí",
+    "en": "question",
+    "example": "我有一个问题想问老师。",
+    "example_py": "Wǒ yǒu yī gè wèntí xiǎng wèn lǎoshī."
+  },
+  {
+    "cn": "事情",
+    "py": "shìqing",
+    "en": "matter",
+    "example": "我有很重要的事情要做。",
+    "example_py": "Wǒ yǒu hěn zhòngyào de shìqing yào zuò."
+  },
+  {
+    "cn": "考试",
+    "py": "kǎoshì",
+    "en": "exam",
+    "example": "明天我们要考试。",
+    "example_py": "Míngtiān wǒmen yào kǎoshì."
+  },
+  {
+    "cn": "票",
+    "py": "piào",
+    "en": "ticket",
+    "example": "我买了一张电影票。",
+    "example_py": "Wǒ mǎi le yī zhāng diànyǐng piào."
+  },
+  {
+    "cn": "意思",
+    "py": "yìsi",
+    "en": "meaning",
+    "example": "这个词是什么意思？",
+    "example_py": "Zhège cí shì shénme yìsi?"
+  },
+  {
+    "cn": "颜色",
+    "py": "yánsè",
+    "en": "color",
+    "example": "你喜欢什么颜色？",
+    "example_py": "Nǐ xǐhuan shénme yánsè?"
+  },
+  {
+    "cn": "铅笔",
+    "py": "qiānbǐ",
+    "en": "pencil",
+    "example": "请给我一支铅笔。",
+    "example_py": "Qǐng gěi wǒ yī zhī qiānbǐ."
+  },
+  {
+    "cn": "面条",
+    "py": "miàntiáo",
+    "en": "noodle",
+    "example": "我喜欢吃面条。",
+    "example_py": "Wǒ xǐhuan chī miàntiáo."
+  },
+  {
+    "cn": "火车站",
+    "py": "huǒchēzhàn",
+    "en": "train station",
+    "example": "火车站离这里很远。",
+    "example_py": "Huǒchēzhàn lí zhèlǐ hěn yuǎn."
+  },
+  {
+    "cn": "公司",
+    "py": "gōngsī",
+    "en": "company",
+    "example": "我在这家公司工作。",
+    "example_py": "Wǒ zài zhè jiā gōngsī gōngzuò."
+  },
+  {
+    "cn": "宾馆",
+    "py": "bīnguǎn",
+    "en": "hotel",
+    "example": "我们住在一家宾馆里。",
+    "example_py": "Wǒmen zhù zài yī jiā bīnguǎn lǐ."
+  },
+  {
+    "cn": "说话",
+    "py": "shuōhuà",
+    "en": "talk",
+    "example": "请不要大声说话。",
+    "example_py": "Qǐng bùyào dàshēng shuōhuà."
+  },
+  {
+    "cn": "卖",
+    "py": "mài",
+    "en": "sell",
+    "example": "这家商店卖衣服。",
+    "example_py": "Zhè jiā shāngdiàn mài yīfu."
+  },
+  {
+    "cn": "问",
+    "py": "wèn",
+    "en": "ask",
+    "example": "我想问你一个问题。",
+    "example_py": "Wǒ xiǎng wèn nǐ yī gè wèntí."
+  },
+  {
+    "cn": "走",
+    "py": "zǒu",
+    "en": "walk",
+    "example": "我们走路上学吧。",
+    "example_py": "Wǒmen zǒulù shàngxué ba."
+  },
+  {
+    "cn": "进",
+    "py": "jìn",
+    "en": "enter",
+    "example": "请进！",
+    "example_py": "Qǐng jìn!"
+  },
+  {
+    "cn": "出",
+    "py": "chū",
+    "en": "come",
+    "example": "他从房间里出来了。",
+    "example_py": "Tā cóng fángjiān lǐ chūlái le."
+  },
+  {
+    "cn": "跑步",
+    "py": "pǎobù",
+    "en": "run",
+    "example": "我每天早上跑步。",
+    "example_py": "Wǒ měitiān zǎoshàng pǎobù."
+  },
+  {
+    "cn": "到",
+    "py": "dào",
+    "en": "arrive",
+    "example": "我八点到学校。",
+    "example_py": "Wǒ bā diǎn dào xuéxiào."
+  },
+  {
+    "cn": "穿",
+    "py": "chuān",
+    "en": "wear",
+    "example": "今天很冷，要多穿衣服。",
+    "example_py": "Jīntiān hěn lěng, yào duō chuān yīfu."
+  },
+  {
+    "cn": "洗",
+    "py": "xǐ",
+    "en": "wash",
+    "example": "我每天都要洗脸。",
+    "example_py": "Wǒ měitiān dōu yào xǐ liǎn."
+  },
+  {
+    "cn": "给",
+    "py": "gěi",
+    "en": "give",
+    "example": "请给我一杯水。",
+    "example_py": "Qǐng gěi wǒ yī bēi shuǐ."
+  },
+  {
+    "cn": "找",
+    "py": "zhǎo",
+    "en": "find",
+    "example": "我在找我的手机。",
+    "example_py": "Wǒ zài zhǎo wǒ de shǒujī."
+  },
+  {
+    "cn": "懂",
+    "py": "dǒng",
+    "en": "understand",
+    "example": "我听不懂他说的话。",
+    "example_py": "Wǒ tīng bù dǒng tā shuō de huà."
+  },
+  {
+    "cn": "笑",
+    "py": "xiào",
+    "en": "smile",
+    "example": "她笑得很开心。",
+    "example_py": "Tā xiào de hěn kāixīn."
+  },
+  {
+    "cn": "告诉",
+    "py": "gàosù",
+    "en": "tell",
+    "example": "请告诉我你的电话号码。",
+    "example_py": "Qǐng gàosù wǒ nǐ de diànhuà hàomǎ."
+  },
+  {
+    "cn": "准备",
+    "py": "zhǔnbèi",
+    "en": "prepare",
+    "example": "我在准备明天的考试。",
+    "example_py": "Wǒ zài zhǔnbèi míngtiān de kǎoshì."
+  },
+  {
+    "cn": "开始",
+    "py": "kāishǐ",
+    "en": "begin",
+    "example": "我们什么时候开始上课？",
+    "example_py": "Wǒmen shénme shíhòu kāishǐ shàngkè?"
+  },
+  {
+    "cn": "介绍",
+    "py": "jièshào",
+    "en": "introduce",
+    "example": "让我介绍一下我的朋友。",
+    "example_py": "Ràng wǒ jièshào yīxià wǒ de péngyǒu."
+  },
+  {
+    "cn": "帮助",
+    "py": "bāngzhù",
+    "en": "help",
+    "example": "谢谢你帮助我。",
+    "example_py": "Xièxie nǐ bāngzhù wǒ."
+  },
+  {
+    "cn": "玩",
+    "py": "wán",
+    "en": "play",
+    "example": "周末我喜欢和朋友一起玩。",
+    "example_py": "Zhōumò wǒ xǐhuan hé péngyǒu yīqǐ wán."
+  },
+  {
+    "cn": "送",
+    "py": "sòng",
+    "en": "present",
+    "example": "我送你一件礼物。",
+    "example_py": "Wǒ sòng nǐ yī jiàn lǐwù."
+  },
+  {
+    "cn": "等",
+    "py": "děng",
+    "en": "wait",
+    "example": "我在等你。",
+    "example_py": "Wǒ zài děng nǐ."
+  },
+  {
+    "cn": "让",
+    "py": "ràng",
+    "en": "let",
+    "example": "请让一下。",
+    "example_py": "Qǐng ràng yīxià."
+  },
+  {
+    "cn": "起床",
+    "py": "qǐchuáng",
+    "en": "get up",
+    "example": "我每天早上七点起床。",
+    "example_py": "Wǒ měitiān zǎoshàng qī diǎn qǐchuáng."
+  },
+  {
+    "cn": "唱歌",
+    "py": "chànggē",
+    "en": "sing",
+    "example": "她喜欢唱歌。",
+    "example_py": "Tā xǐhuan chànggē."
+  },
+  {
+    "cn": "跳舞",
+    "py": "tiàowǔ",
+    "en": "dance",
+    "example": "她跳舞跳得很好。",
+    "example_py": "Tā tiàowǔ tiào de hěn hǎo."
+  },
+  {
+    "cn": "旅游",
+    "py": "lǚyóu",
+    "en": "travel",
+    "example": "我想去北京旅游。",
+    "example_py": "Wǒ xiǎng qù Běijīng lǚyóu."
+  },
+  {
+    "cn": "上班",
+    "py": "shàngbān",
+    "en": "be on duty",
+    "example": "我爸爸每天八点上班。",
+    "example_py": "Wǒ bàba měitiān bā diǎn shàngbān."
+  },
+  {
+    "cn": "生病",
+    "py": "shēngbìng",
+    "en": "get ill, get sick",
+    "example": "他生病了，没来上课。",
+    "example_py": "Tā shēngbìng le, méi lái shàngkè."
+  },
+  {
+    "cn": "休息",
+    "py": "xiūxi",
+    "en": "rest",
+    "example": "我周末在家休息。",
+    "example_py": "Wǒ zhōumò zài jiā xiūxi."
+  },
+  {
+    "cn": "运动",
+    "py": "yùndòng",
+    "en": "exercise",
+    "example": "我喜欢做运动。",
+    "example_py": "Wǒ xǐhuan zuò yùndòng."
+  },
+  {
+    "cn": "游泳",
+    "py": "yóuyǒng",
+    "en": "swim",
+    "example": "夏天我喜欢游泳。",
+    "example_py": "Xiàtiān wǒ xǐhuan yóuyǒng."
+  },
+  {
+    "cn": "踢足球",
+    "py": "tīzúqiú",
+    "en": "play footbal",
+    "example": "他喜欢在操场上踢足球。",
+    "example_py": "Tā xǐhuan zài cāochǎng shàng tī zúqiú."
+  },
+  {
+    "cn": "打篮球",
+    "py": "dǎlánqiú",
+    "en": "play basketball",
+    "example": "我们下午去打篮球吧。",
+    "example_py": "Wǒmen xiàwǔ qù dǎ lánqiú ba."
+  },
+  {
+    "cn": "完",
+    "py": "wán",
+    "en": "finish",
+    "example": "我作业做完了。",
+    "example_py": "Wǒ zuòyè zuò wán le."
+  },
+  {
+    "cn": "觉得",
+    "py": "juédé",
+    "en": "think",
+    "example": "我觉得这个主意很好。",
+    "example_py": "Wǒ juédé zhège zhǔyi hěn hǎo."
+  },
+  {
+    "cn": "知道",
+    "py": "zhīdao",
+    "en": "know",
+    "example": "我知道这件事。",
+    "example_py": "Wǒ zhīdao zhè jiàn shì."
+  },
+  {
+    "cn": "希望",
+    "py": "xīwàng",
+    "en": "hope",
+    "example": "我希望你能来。",
+    "example_py": "Wǒ xīwàng nǐ néng lái."
+  },
+  {
+    "cn": "可以",
+    "py": "kěyǐ",
+    "en": "can",
+    "example": "你可以走了。",
+    "example_py": "Nǐ kěyǐ zǒu le."
+  },
+  {
+    "cn": "要",
+    "py": "yào",
+    "en": "want",
+    "example": "我要一杯咖啡。",
+    "example_py": "Wǒ yào yī bēi kāfēi."
+  },
+  {
+    "cn": "可能",
+    "py": "kěnéng",
+    "en": "may",
+    "example": "明天可能会下雨。",
+    "example_py": "Míngtiān kěnéng huì xiàyǔ."
+  },
+  {
+    "cn": "高",
+    "py": "gāo",
+    "en": "tall",
+    "example": "这座山很高。",
+    "example_py": "Zhè zuò shān hěn gāo."
+  },
+  {
+    "cn": "红",
+    "py": "hóng",
+    "en": "red",
+    "example": "她穿着一件红色的衣服。",
+    "example_py": "Tā chuān zhe yī jiàn hóngsè de yīfu."
+  },
+  {
+    "cn": "白",
+    "py": "bái",
+    "en": "white",
+    "example": "这件衣服是白色的。",
+    "example_py": "Zhè jiàn yīfu shì báisè de."
+  },
+  {
+    "cn": "黑",
+    "py": "hēi",
+    "en": "black",
+    "example": "他的头发是黑色的。",
+    "example_py": "Tā de tóufa shì hēisè de."
+  },
+  {
+    "cn": "忙",
+    "py": "máng",
+    "en": "busy",
+    "example": "我最近很忙。",
+    "example_py": "Wǒ zuìjìn hěn máng."
+  },
+  {
+    "cn": "快",
+    "py": "kuài",
+    "en": "fast",
+    "example": "他跑得很快。",
+    "example_py": "Tā pǎo de hěn kuài."
+  },
+  {
+    "cn": "慢",
+    "py": "màn",
+    "en": "slow",
+    "example": "请说慢一点。",
+    "example_py": "Qǐng shuō màn yīdiǎn."
+  },
+  {
+    "cn": "远",
+    "py": "yuǎn",
+    "en": "far",
+    "example": "我家离学校很远。",
+    "example_py": "Wǒ jiā lí xuéxiào hěn yuǎn."
+  },
+  {
+    "cn": "近",
+    "py": "jìn",
+    "en": "close",
+    "example": "商店离我家很近。",
+    "example_py": "Shāngdiàn lí wǒ jiā hěn jìn."
+  },
+  {
+    "cn": "好吃",
+    "py": "hǎochī",
+    "en": "delicious",
+    "example": "这个菜很好吃。",
+    "example_py": "Zhège cài hěn hǎochī."
+  },
+  {
+    "cn": "累",
+    "py": "lèi",
+    "en": "tired",
+    "example": "我今天很累。",
+    "example_py": "Wǒ jīntiān hěn lèi."
+  },
+  {
+    "cn": "长",
+    "py": "cháng",
+    "en": "long",
+    "example": "这条河很长。",
+    "example_py": "Zhè tiáo hé hěn cháng."
+  },
+  {
+    "cn": "新",
+    "py": "xīn",
+    "en": "new",
+    "example": "我买了一辆新车。",
+    "example_py": "Wǒ mǎi le yī liàng xīn chē."
+  },
+  {
+    "cn": "贵",
+    "py": "guì",
+    "en": "expensive",
+    "example": "这件衣服很贵。",
+    "example_py": "Zhè jiàn yīfu hěn guì."
+  },
+  {
+    "cn": "便宜",
+    "py": "piányi",
+    "en": "cheap",
+    "example": "这个东西很便宜。",
+    "example_py": "Zhège dōngxi hěn piányi."
+  },
+  {
+    "cn": "晴",
+    "py": "qíng",
+    "en": "fine",
+    "example": "今天天气很晴。",
+    "example_py": "Jīntiān tiānqì hěn qíng."
+  },
+  {
+    "cn": "阴",
+    "py": "yīn",
+    "en": "cloudy",
+    "example": "今天天气很阴。",
+    "example_py": "Jīntiān tiānqì hěn yīn."
+  },
+  {
+    "cn": "错",
+    "py": "cuò",
+    "en": "wrong",
+    "example": "对不起，我错了。",
+    "example_py": "Duìbùqǐ, wǒ cuò le."
+  },
+  {
+    "cn": "快乐",
+    "py": "kuàilè",
+    "en": "happy",
+    "example": "祝你生日快乐！",
+    "example_py": "Zhù nǐ shēngrì kuàilè!"
+  },
+  {
+    "cn": "对",
+    "py": "duì",
+    "en": "to",
+    "example": "你说得对。",
+    "example_py": "Nǐ shuō de duì."
+  },
+  {
+    "cn": "对",
+    "py": "duì",
+    "en": "right",
+    "example": "你说得对。",
+    "example_py": "Nǐ shuō de duì."
+  }
 ]
