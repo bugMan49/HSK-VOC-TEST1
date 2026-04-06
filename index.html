@@ -2,15 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>HSK 词汇学习</title>
     <style>
         /* styles.css 文件中 */
         /* 防误触下滑刷新 */
         body {
             overscroll-behavior-y: contain;
-            /* 或者 */
-            /*  overscroll-behavior: none; */
         }
         :root { --primary-color: #4a90e2; --success-color: #2ecc71; --warning-color: #f1c40f; --danger-color: #e74c3c; --bg-color: #f5f7fa; --card-bg: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #333; }
@@ -18,8 +16,63 @@
         .undo-btn { position: absolute; top: -50px; left: 0; background-color: #95a5a6; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
         .undo-btn:hover { background-color: #7f8c8c; }
         .progress { margin-bottom: 20px; color: #666; font-size: 0.9rem; }
-        .flashcard { background-color: var(--card-bg); border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 60px 20px; cursor: pointer; transition: transform 0.2s; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .flashcard:active { transform: scale(0.98); }
+
+        /* 3D卡片容器 */
+        .flashcard-scene {
+            perspective: 1000px;
+            width: 100%;
+            height: 320px;
+            margin: 0 auto;
+            cursor: grab;
+        }
+
+        .flashcard-scene:active {
+            cursor: grabbing;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flashcard-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-inner.dragging {
+            transition: none;
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background-color: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .flashcard-face.front {
+            z-index: 2;
+        }
+
+        .flashcard-face.back {
+            transform: rotateY(180deg);
+            background-color: var(--card-bg);
+        }
+
+        /* 原有样式适配 */
         .chinese { font-size: 3.5rem; font-weight: bold; margin: 0; color: #2c3e50; cursor: pointer; user-select: none; }
         .chinese:hover { text-decoration: underline; }
         .pinyin { font-size: 1.5rem; color: #7f8c8d; margin-top: 10px; margin-bottom: 20px; opacity: 1; transition: opacity 0.3s ease; }
@@ -27,10 +80,64 @@
         .english { font-size: 1.8rem; color: var(--primary-color); margin-top: 20px; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
         .english.show { opacity: 1; transform: translateY(0); }
         .hint-text { font-size: 0.8rem; color: #bdc3c7; margin-top: 30px; }
-        
+
+        /* 背面例句样式 - 只显示例句 */
+        .example-section {
+            width: 100%;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .example-label {
+            font-size: 0.9rem;
+            color: #95a5a6;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .example-cn {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .example-py {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            line-height: 1.4;
+        }
+
+        /* 滑动指示器 - 只在正面显示 */
+        .swipe-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: rgba(74, 144, 226, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .swipe-indicator.left {
+            left: 15px;
+        }
+
+        .swipe-indicator.right {
+            right: 15px;
+        }
+
+        .flashcard-scene.show-hint-left .swipe-indicator.left,
+        .flashcard-scene.show-hint-right .swipe-indicator.right {
+            opacity: 1;
+        }
+
         /* 按钮容器样式 */
         .controls { display: flex; justify-content: space-between; gap: 10px; margin-top: 30px; }
-        
+
         /* 按钮基础样式 */
         .btn { 
             border: none; 
@@ -45,23 +152,23 @@
             flex-direction: column; 
             justify-content: center; 
             align-items: center; 
-            gap: 5px; /* 图标和文字之间的间距 */
-            transition: all 0.1s ease; /* 添加过渡动画 */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 添加阴影，增强立体感 */
+            gap: 5px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .btn:disabled { background-color: #ccc; cursor: not-allowed; }
-        
+
         /* 按钮特定颜色 */
         .btn-know { background-color: var(--success-color); }
         .btn-fuzzy { background-color: var(--warning-color); color: #333; }
         .btn-unknow { background-color: var(--danger-color); }
-        
+
         /* 按钮按下特效 */
         .btn:active { 
-            transform: scale(0.95); /* 按下时缩小 */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 按下时降低阴影 */
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        
+
         /* 按钮图标样式 */
         .btn-icon { 
             width: 24px; 
@@ -70,7 +177,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* 图标内的 SVG 图形样式 */
         .btn-icon svg { 
             width: 100%; 
@@ -92,14 +199,14 @@
             gap: 5px;
         }
         .jump-input {
-            padding: 10px 15px 10px 5px; /* 减少左侧内边距，因为去掉了箭头 */
+            padding: 10px 15px 10px 5px;
             font-size: 1rem;
             border: 1px solid #ddd;
             border-radius: 5px;
             width: 80px;
             text-align: center;
-            appearance: none; /* 关键：移除默认外观 */
-            -moz-appearance: textfield; /* Firefox 兼容 */
+            appearance: none;
+            -moz-appearance: textfield;
         }
         .btn-jump {
             background-color: #74b9ff;
@@ -112,13 +219,12 @@
         .btn-jump:hover {
             background-color: #5f9ae6;
         }
-         /* Webkit 内核浏览器（Chrome, Safari等）隐藏箭头 */
         .jump-input::-webkit-outer-spin-button,
         .jump-input::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0;
         }
-        
+
         .level-selector {
             position: absolute;
             top: -50px;
@@ -132,7 +238,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* 新增：复习模式状态标签 */
+        /* 复习模式状态标签 */
         .review-status-tag {
             position: absolute;
             top: 10px;
@@ -151,6 +257,21 @@
             background-color: var(--warning-color);
             color: #333;
         }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            .flashcard-scene {
+                height: 280px;
+            }
+
+            .example-cn {
+                font-size: 1.6rem;
+            }
+
+            .example-py {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -158,14 +279,14 @@
 <div class="container">
     <div id="study-view">
         <button class="undo-btn" onclick="undoLast()" id="undo-btn">↩ 上步</button>
-        
+
         <select class="level-selector" id="levelSelector" onchange="switchLevel(this.value)" disabled>
             <option value="hsk1_data.json">HSK 1</option>
             <option value="hsk2_data.json">HSK 2</option>
             <option value="hsk3_data.json">HSK 3</option>
             <option value="hsk4_data.json" selected>HSK 4</option>
         </select>
-        
+
         <div class="jump-controls">
             <input type="number" id="wordJumpInput" class="jump-input" min="1" placeholder="单词序号" />
             <button class="btn-jump" onclick="goToCard()">跳转</button>
@@ -174,15 +295,32 @@
         <div class="progress">
             进度: <span id="current-index">1</span> / <span id="total-count">0</span>
         </div>
-        <div class="flashcard" onclick="toggleAnswer()">
-            <!-- 新增：状态标签 -->
-            <div id="review-status-tag" class="review-status-tag" style="display: none;">
-                <span id="tag-text">未知</span>
+
+        <!-- 3D卡片结构 -->
+        <div class="flashcard-scene" id="flashcardScene">
+            <div class="flashcard-inner" id="flashcardInner">
+                <!-- 正面 -->
+                <div class="flashcard-face front" id="cardFront">
+                    <div id="review-status-tag" class="review-status-tag" style="display: none;">
+                        <span id="tag-text">未知</span>
+                    </div>
+                    <h1 class="chinese" id="word-cn" onclick="speakAndTogglePinyin(event)">加载中...</h1>
+                    <div class="pinyin hidden" id="word-py">pīnyīn</div>
+                    <div class="english" id="word-en"></div>
+                    <div class="hint-text">点击汉字发音并切换拼音显示<br>← 左滑查看例句 | 点击卡片查看英文 →</div>
+                    <div class="swipe-indicator left">‹</div>
+                    <div class="swipe-indicator right">›</div>
+                </div>
+
+                <!-- 背面 - 只显示例句 -->
+                <div class="flashcard-face back" id="cardBack">
+                    <div class="example-section">
+                        <div class="example-label">例句</div>
+                        <div class="example-cn" id="example-cn">例句加载中...</div>
+                        <div class="example-py" id="example-py">...</div>
+                    </div>
+                </div>
             </div>
-            <h1 class="chinese" id="word-cn" onclick="speakAndTogglePinyin(event)">加载中...</h1>
-            <div class="pinyin hidden" id="word-py">pīnyīn</div>
-            <div class="english" id="word-en"></div>
-            <div class="hint-text">点击汉字发音并切换拼音显示，点击卡片查看英文释义</div>
         </div>
 
         <div class="controls">
@@ -219,27 +357,21 @@
         <div class="result-section"><h3 style="color: var(--danger-color)">不认识 (<span id="count-unknown">0</span>)</h3><div id="list-unknown"></div></div>
         <div class="result-section"><h3 style="color: var(--warning-color)">不确定 (<span id="count-fuzzy">0</span>)</h3><div id="list-fuzzy"></div></div>
         <div class="result-section"><h3 style="color: var(--success-color)">认识 (<span id="count-know">0</span>)</h3><div id="list-know"></div></div>
-        <!-- 新增：复习按钮 -->
         <button class="btn btn-stop" onclick="startReview()">去复习</button>
         <button class="btn btn-stop" onclick="location.reload()">重新开始</button>
     </div>
 </div>
 
 <script>
-    // 使用外部文件中的变量 hskVocabulary
-    // 如果外部文件加载失败，提供一个空数组防止报错
     let vocabulary = [];
     let currentIndex = 0;
     let results = { know: [], fuzzy: [], unknown: [] };
     let history = [];
-    // 新增：跟踪拼音显示状态
     let isPinyinVisible = false;
-    // 新增：全局变量存储当前语速
     let currentSpeechRate = 0.8;
-    // 新增：用于区分是正常学习还是复习模式
     let isInReviewMode = false;
-    // 新增：存储复习的词汇
     let reviewVocabulary = [];
+    let isCardFlipped = false; // 跟踪卡片翻转状态
 
     const elCn = document.getElementById('word-cn');
     const elPy = document.getElementById('word-py');
@@ -249,11 +381,13 @@
     const studyView = document.getElementById('study-view');
     const resultView = document.getElementById('result-view');
     const undoBtn = document.getElementById('undo-btn');
-    // 新增：获取状态标签元素
     const reviewStatusTag = document.getElementById('review-status-tag');
     const tagTextElement = document.getElementById('tag-text');
+    const elExampleCn = document.getElementById('example-cn');
+    const elExamplePy = document.getElementById('example-py');
+    const flashcardScene = document.getElementById('flashcardScene');
+    const flashcardInner = document.getElementById('flashcardInner');
 
-    // 动态加载新的词汇数据文件 (JSON)
     async function loadVocabulary(src) {
         try {
             const response = await fetch(src);
@@ -266,20 +400,16 @@
         } catch (error) {
             console.error(error);
             alert(error.message);
-            vocabulary = []; // 加载失败时清空词汇表
+            vocabulary = [];
         }
     }
 
     async function switchLevel(src) {
-        // 重置学习状态
         currentIndex = 0;
         results = { know: [], fuzzy: [], unknown: [] };
         history = [];
         isInReviewMode = false;
-        
         await loadVocabulary(src);
-        
-        // 重新初始化界面
         init();
     }
 
@@ -290,17 +420,17 @@
             elEn.textContent = "注意：必须通过本地服务器运行 (如 Live Server)，不能直接双击打开 HTML。";
             return;
         }
-        
+
         elTotalCount.textContent = vocabulary.length;
         loadWord(currentIndex);
         updateUndoButton();
-        // 复习模式下禁用级别选择器
         document.getElementById('levelSelector').disabled = isInReviewMode;
+        initSwipeGesture();
     }
 
     function loadWord(index) {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
-        
+
         if (index < 0 || index >= currentVocabArray.length) {
             alert(`请输入 1 到 ${currentVocabArray.length} 之间的数字。`);
             return;
@@ -309,21 +439,32 @@
             stopLearning();
             return;
         }
-        
+
         const word = currentVocabArray[index];
         elCn.textContent = word.cn;
         elPy.textContent = word.py;
         elEn.textContent = word.en;
         elCurrentIndex.textContent = index + 1;
         elEn.classList.remove('show');
-        // 根据当前状态设置拼音的显隐
+
+        if (word.example) {
+            elExampleCn.textContent = word.example;
+            elExamplePy.textContent = word.example_py || '';
+        } else {
+            elExampleCn.textContent = "暂无例句";
+            elExamplePy.textContent = "";
+        }
+
         if (isPinyinVisible) {
             elPy.classList.remove('hidden');
         } else {
             elPy.classList.add('hidden');
         }
 
-        // 新增：如果是复习模式，显示状态标签
+        // 重置卡片到正面状态
+        flashcardInner.classList.remove('is-flipped');
+        isCardFlipped = false;
+
         if (isInReviewMode) {
             reviewStatusTag.style.display = 'block';
             if (word.originalStatus === 'unknown') {
@@ -342,10 +483,8 @@
         elEn.classList.toggle('show');
     }
 
-    // 新增：点击汉字发音并切换拼音显示
     function speakAndTogglePinyin(event) {
-        event.stopPropagation(); // 防止点击汉字触发翻转卡片
-        // 发音
+        event.stopPropagation();
         const textToSpeak = elCn.textContent;
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(textToSpeak);
@@ -355,12 +494,9 @@
         } else {
             alert('您的浏览器不支持语音合成功能。');
         }
-        
-        // 切换拼音显示
         togglePinyin();
     }
 
-    // 新增：切换拼音显示/隐藏
     function togglePinyin() {
         isPinyinVisible = !isPinyinVisible;
         if (isPinyinVisible) {
@@ -372,16 +508,14 @@
 
     function handleResult(status) {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
-        
+
         history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentVocabArray[currentIndex].originalStatus : null });
-        // 在复习模式下，结果记录到一个临时的“已掌握”列表，不影响原始结果
         if (isInReviewMode) {
-            // 可以在这里添加逻辑，比如记录复习结果
-            // 例如，如果在复习中被标记为“认识”，则可以从下次复习中移除
+            // 复习模式逻辑
         } else {
             results[status].push(currentVocabArray[currentIndex]);
         }
-        
+
         currentIndex++;
         loadWord(currentIndex);
         updateUndoButton();
@@ -391,7 +525,6 @@
         if (history.length === 0) return;
         const lastState = history.pop();
         currentIndex = lastState.index;
-        // 在复习模式下，不需要从原始结果列表中删除
         if (!isInReviewMode) {
             results[lastState.status].pop();
         }
@@ -434,31 +567,26 @@
         container.innerHTML = html;
     }
 
-    // 新增：开始复习模式
     function startReview() {
         if (results.unknown.length === 0 && results.fuzzy.length === 0) {
             alert("没有需要复习的单词！");
             return;
         }
-        
-        // 构建复习词汇列表，合并“不认识”和“模糊”的单词，并附上它们的原始状态
+
         reviewVocabulary = [
             ...results.unknown.map(word => ({...word, originalStatus: 'unknown'})),
             ...results.fuzzy.map(word => ({...word, originalStatus: 'fuzzy'}))
         ];
-        
-        // 洗牌，打乱复习顺序
+
         for (let i = reviewVocabulary.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [reviewVocabulary[i], reviewVocabulary[j]] = [reviewVocabulary[j], reviewVocabulary[i]];
         }
 
-        // 设置为复习模式
         isInReviewMode = true;
         currentIndex = 0;
-        history = []; // 复习模式下重置历史记录
-        
-        // 初始化复习界面
+        history = [];
+
         document.getElementById('levelSelector').disabled = isInReviewMode;
         elTotalCount.textContent = reviewVocabulary.length;
         studyView.style.display = 'block';
@@ -467,17 +595,129 @@
         updateUndoButton();
     }
 
+    // 滑动手势检测 - 修复返回动画
+    function initSwipeGesture() {
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let isDragging = false;
+        let startTime = 0;
 
-    // 监听跳转输入框的回车事件
+        const SWIPE_THRESHOLD = 80;
+        const TIME_THRESHOLD = 300;
+
+        flashcardScene.addEventListener('touchstart', handleStart, { passive: false });
+        flashcardScene.addEventListener('touchmove', handleMove, { passive: false });
+        flashcardScene.addEventListener('touchend', handleEnd, { passive: false });
+
+        flashcardScene.addEventListener('mousedown', handleStart);
+        flashcardScene.addEventListener('mousemove', handleMove);
+        flashcardScene.addEventListener('mouseup', handleEnd);
+        flashcardScene.addEventListener('mouseleave', handleEnd);
+
+        flashcardScene.addEventListener('selectstart', (e) => {
+            if (isDragging) e.preventDefault();
+        });
+
+        function handleStart(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+
+            isDragging = true;
+            startTime = Date.now();
+
+            if (e.type === 'touchstart') {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            } else {
+                startX = e.clientX;
+                startY = e.clientY;
+                e.preventDefault();
+            }
+
+            currentX = startX;
+            flashcardInner.classList.add('dragging');
+        }
+
+        function handleMove(e) {
+            if (!isDragging) return;
+
+            let clientX, clientY;
+            if (e.type === 'touchmove') {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const deltaX = clientX - startX;
+            const deltaY = clientY - startY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                e.preventDefault();
+
+                // 根据当前翻转状态调整旋转
+                let baseRotation = isCardFlipped ? 180 : 0;
+                const rotation = baseRotation + Math.max(-30, Math.min(30, deltaX * 0.3));
+                flashcardInner.style.transform = `rotateY(${rotation}deg)`;
+
+                if (deltaX > 20) {
+                    flashcardScene.classList.add('show-hint-right');
+                    flashcardScene.classList.remove('show-hint-left');
+                } else if (deltaX < -20) {
+                    flashcardScene.classList.add('show-hint-left');
+                    flashcardScene.classList.remove('show-hint-right');
+                }
+            }
+
+            currentX = clientX;
+        }
+
+        function handleEnd(e) {
+            if (!isDragging) return;
+
+            isDragging = false;
+            flashcardInner.classList.remove('dragging');
+            flashcardScene.classList.remove('show-hint-left', 'show-hint-right');
+
+            const deltaX = currentX - startX;
+            const deltaTime = Date.now() - startTime;
+
+            const isSwipe = Math.abs(deltaX) > SWIPE_THRESHOLD || 
+                           (Math.abs(deltaX) > 30 && deltaTime < TIME_THRESHOLD);
+
+            if (isSwipe) {
+                if (deltaX < 0 && !isCardFlipped) {
+                    // 左滑且当前是正面 -> 翻转到背面
+                    flashcardInner.classList.add('is-flipped');
+                    flashcardInner.style.transform = '';
+                    isCardFlipped = true;
+                } else if (deltaX > 0 && isCardFlipped) {
+                    // 右滑且当前是背面 -> 翻转回正面
+                    flashcardInner.classList.remove('is-flipped');
+                    flashcardInner.style.transform = '';
+                    isCardFlipped = false;
+                } else {
+                    // 其他情况恢复原状
+                    flashcardInner.style.transform = '';
+                }
+            } else {
+                // 不是有效滑动，恢复原状
+                flashcardInner.style.transform = '';
+            }
+
+            startX = 0;
+            currentX = 0;
+        }
+    }
+
     document.getElementById('wordJumpInput').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             goToCard();
         }
     });
 
-    // 页面加载完成后初始化
     window.onload = function() {
-        // 首次加载默认的HSK4数据
         loadVocabulary('hsk4_data.json')
             .then(() => {
                 init();
@@ -489,25 +729,23 @@
 
     function goToCard() {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
-        
+
         const inputElement = document.getElementById('wordJumpInput');
         const numberStr = inputElement.value.trim();
         if (!numberStr) {
             alert("请输入一个单词序号。");
             return;
         }
-        const targetIndex = parseInt(numberStr) - 1; // 转换为数组索引（从0开始）
+        const targetIndex = parseInt(numberStr) - 1;
         if (targetIndex < 0 || targetIndex >= currentVocabArray.length) {
             alert(`请输入 1 到 ${currentVocabArray.length} 之间的数字。`);
             return;
         }
-        // 重置历史记录，因为跳转破坏了连续性
         history = [];
         updateUndoButton();
-        // 跳转到指定卡片
         loadWord(targetIndex);
         currentIndex = targetIndex;
-        inputElement.value = ''; // 清空输入框
+        inputElement.value = '';
     }
 </script>
 
