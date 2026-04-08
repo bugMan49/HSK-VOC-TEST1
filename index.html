@@ -13,6 +13,50 @@
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #333; }
         .container { width: 90%; max-width: 500px; text-align: center; position: relative; padding-top: 60px; }
 
+        /* Toast 通知样式 */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background-color: var(--success-color);
+        }
+
+        .toast.error {
+            background-color: var(--danger-color);
+        }
+
+        .toast.warning {
+            background-color: var(--warning-color);
+            color: #333;
+        }
+
         /* 顶部控制栏 */
         .top-controls {
             position: absolute;
@@ -156,24 +200,33 @@
         .english.show { opacity: 1; transform: translateY(0); }
         .hint-text { font-size: 0.8rem; color: #bdc3c7; margin-top: 30px; }
 
+        /* 背面例句样式 - 例句标签固定在左上角 */
         .example-section {
             width: 100%;
-            padding: 0 20px;
+            height: 100%;
+            padding: 50px 20px 20px 20px;
             text-align: center;
             cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .example-section:active {
-            transform: scale(0.98);
-        }
-
+        /* 例句标签 - 固定在左上角 */
         .example-label {
-            font-size: 0.9rem;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 0.85rem;
             color: #95a5a6;
-            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            cursor: default;
+            background-color: rgba(245, 247, 250, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
         .example-cn {
@@ -338,6 +391,16 @@
                 height: 280px;
             }
 
+            .example-section {
+                padding: 45px 15px 15px 15px;
+            }
+
+            .example-label {
+                top: 12px;
+                left: 12px;
+                font-size: 0.75rem;
+            }
+
             .example-cn {
                 font-size: 1.6rem;
             }
@@ -366,6 +429,9 @@
     </style>
 </head>
 <body>
+
+<!-- Toast 容器 -->
+<div class="toast-container" id="toastContainer"></div>
 
 <div class="container">
     <div id="study-view">
@@ -403,6 +469,7 @@
 
                 <div class="flashcard-face back" id="cardBack" onclick="speakExample(event)">
                     <div class="example-section">
+                        <!-- 例句标签固定在左上角 -->
                         <div class="example-label">例句</div>
                         <div class="example-cn" id="example-cn">例句加载中...</div>
                         <div class="example-py" id="example-py">...</div>
@@ -453,6 +520,11 @@
 </div>
 
 <script>
+    // ==================== 常量定义 ====================
+    const SWIPE_THRESHOLD = 80;
+    const TIME_THRESHOLD = 300;
+    const ANIMATION_FRAME_RATE = 16; // ~60fps
+
     let vocabulary = [];
     let currentIndex = 0;
     let results = { know: [], fuzzy: [], unknown: [] };
@@ -462,6 +534,10 @@
     let isInReviewMode = false;
     let reviewVocabulary = [];
     let isCardFlipped = false;
+
+    // 滑动节流相关
+    let isProcessingSwipe = false;
+    let lastFrameTime = 0;
 
     const elCn = document.getElementById('word-cn');
     const elPy = document.getElementById('word-py');
@@ -478,7 +554,48 @@
     const flashcardScene = document.getElementById('flashcardScene');
     const flashcardInner = document.getElementById('flashcardInner');
 
-    // 震动反馈
+    // ==================== Toast 通知系统 ====================
+
+    /**
+     * 显示 Toast 通知
+     * @param {string} message - 消息内容
+     * @param {string} type - 类型: 'success' | 'error' | 'warning' | 'info'
+     * @param {number} duration - 显示时长(ms)
+     */
+    function showToast(message, type = 'info', duration = 2000) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        // 根据类型添加图标
+        const icons = {
+            success: '✓',
+            error: '✗',
+            warning: '⚠',
+            info: 'ℹ'
+        };
+
+        toast.innerHTML = `<span>${icons[type] || 'ℹ'}</span><span>${message}</span>`;
+        container.appendChild(toast);
+
+        // 触发重绘以启动动画
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+
+        // 自动移除
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, duration);
+    }
+
+    // ==================== 震动反馈 ====================
+
     function vibrateByStatus(status) {
         if (!('vibrate' in navigator)) return;
 
@@ -495,6 +612,8 @@
         }
     }
 
+    // ==================== 数据加载 ====================
+
     async function loadVocabulary(src) {
         try {
             const response = await fetch(src);
@@ -506,7 +625,7 @@
             console.log(`成功加载数据: ${src}, 包含 ${vocabulary.length} 个单词.`);
         } catch (error) {
             console.error(error);
-            alert(error.message);
+            showToast(error.message, 'error', 3000);
             vocabulary = [];
         }
     }
@@ -539,7 +658,7 @@
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
 
         if (index < 0 || index >= currentVocabArray.length) {
-            alert(`请输入 1 到 ${currentVocabArray.length} 之间的数字。`);
+            showToast(`请输入 1 到 ${currentVocabArray.length} 之间的数字`, 'warning');
             return;
         }
         if (index >= currentVocabArray.length) {
@@ -589,7 +708,8 @@
         elEn.classList.toggle('show');
     }
 
-    // 通用朗读函数
+    // ==================== 朗读功能 ====================
+
     function speakText(text, rate = 0.8) {
         if (!text || !text.trim()) return;
         if ('speechSynthesis' in window) {
@@ -599,7 +719,7 @@
             utterance.rate = rate;
             speechSynthesis.speak(utterance);
         } else {
-            alert('您的浏览器不支持语音合成功能。');
+            showToast('您的浏览器不支持语音合成功能', 'warning');
         }
     }
 
@@ -623,6 +743,8 @@
         }
     }
 
+    // ==================== 学习逻辑 ====================
+
     function handleResult(status) {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
 
@@ -632,7 +754,6 @@
             results[status].push(currentVocabArray[currentIndex]);
         }
 
-        // 震动反馈
         vibrateByStatus(status);
 
         currentIndex++;
@@ -688,7 +809,7 @@
 
     function startReview() {
         if (results.unknown.length === 0 && results.fuzzy.length === 0) {
-            alert("没有需要复习的单词！");
+            showToast('没有需要复习的单词！', 'info');
             return;
         }
 
@@ -714,15 +835,15 @@
         updateUndoButton();
     }
 
+    // ==================== 滑动处理（带节流）====================
+
     function initSwipeGesture() {
         let startX = 0;
         let startY = 0;
         let currentX = 0;
         let isDragging = false;
         let startTime = 0;
-
-        const SWIPE_THRESHOLD = 80;
-        const TIME_THRESHOLD = 300;
+        let rafId = null;
 
         flashcardScene.addEventListener('touchstart', handleStart, { passive: false });
         flashcardScene.addEventListener('touchmove', handleMove, { passive: false });
@@ -754,6 +875,11 @@
 
             currentX = startX;
             flashcardInner.classList.add('dragging');
+
+            // 取消之前的动画帧
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
         }
 
         function handleMove(e) {
@@ -771,14 +897,31 @@
             const deltaX = clientX - startX;
             const deltaY = clientY - startY;
 
+            // 使用 requestAnimationFrame 节流
+            if (!isProcessingSwipe) {
+                isProcessingSwipe = true;
+                rafId = requestAnimationFrame(() => {
+                    updateCardRotation(deltaX, deltaY);
+                    isProcessingSwipe = false;
+                });
+            }
+
+            currentX = clientX;
+        }
+
+        function updateCardRotation(deltaX, deltaY) {
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                e.preventDefault();
+                // 阻止默认滚动行为
+                if (event && event.cancelable) {
+                    event.preventDefault();
+                }
 
                 let baseRotation = isCardFlipped ? -180 : 0;
                 const rotation = baseRotation + (deltaX * 0.3);
                 const clampedRotation = Math.max(-210, Math.min(30, rotation));
                 flashcardInner.style.transform = `rotateY(${clampedRotation}deg)`;
 
+                // 更新提示
                 if (deltaX > 20) {
                     flashcardScene.classList.add('show-hint-right');
                     flashcardScene.classList.remove('show-hint-left');
@@ -787,8 +930,6 @@
                     flashcardScene.classList.remove('show-hint-right');
                 }
             }
-
-            currentX = clientX;
         }
 
         function handleEnd(e) {
@@ -797,6 +938,12 @@
             isDragging = false;
             flashcardInner.classList.remove('dragging');
             flashcardScene.classList.remove('show-hint-left', 'show-hint-right');
+
+            // 取消未执行的动画帧
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                isProcessingSwipe = false;
+            }
 
             const deltaX = currentX - startX;
             const deltaTime = Date.now() - startTime;
@@ -825,6 +972,8 @@
         }
     }
 
+    // ==================== 事件监听 ====================
+
     document.getElementById('wordJumpInput').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             goToCard();
@@ -838,6 +987,7 @@
             })
             .catch(err => {
                 console.error('初始数据加载失败:', err);
+                showToast('数据加载失败，请检查网络', 'error', 3000);
             });
     };
 
@@ -851,7 +1001,7 @@
         }
         const targetIndex = parseInt(numberStr) - 1;
         if (targetIndex < 0 || targetIndex >= currentVocabArray.length) {
-            alert(`请输入 1 到 ${currentVocabArray.length} 之间的数字。`);
+            showToast(`请输入 1 到 ${currentVocabArray.length} 之间的数字`, 'warning');
             inputElement.value = '';
             return;
         }
