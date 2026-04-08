@@ -13,7 +13,7 @@
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #333; }
         .container { width: 90%; max-width: 500px; text-align: center; position: relative; padding-top: 60px; }
 
-        /* 顶部控制栏 - 新布局 */
+        /* 顶部控制栏 */
         .top-controls {
             position: absolute;
             top: 0;
@@ -26,7 +26,6 @@
             padding: 0 5px;
         }
 
-        /* 上步按钮 */
         .undo-btn { 
             background-color: #95a5a6; 
             color: white; 
@@ -40,7 +39,6 @@
         .undo-btn:hover { background-color: #7f8c8c; }
         .undo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* 级别选择器 - 中间 */
         .level-selector {
             flex: 1;
             padding: 8px 10px;
@@ -52,7 +50,6 @@
             min-width: 80px;
         }
 
-        /* 跳转输入框 - 右侧，无按钮 */
         .jump-input {
             width: 70px;
             padding: 8px 5px;
@@ -77,24 +74,6 @@
         .jump-input::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0;
-        }
-
-        /* 保存状态提示 */
-        .save-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--success-color);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
-        }
-        .save-indicator.show {
-            opacity: 1;
         }
 
         .progress { 
@@ -329,36 +308,6 @@
         .result-section h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
         .word-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
 
-        .error-count {
-            background-color: var(--danger-color);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            margin-left: 5px;
-        }
-
-        .stubborn-section {
-            background-color: #fff5f5;
-            border: 1px solid #feb2b2;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .stubborn-section h3 {
-            color: var(--danger-color);
-            margin-top: 0;
-            border-bottom: 2px solid #feb2b2;
-            padding-bottom: 10px;
-        }
-
-        .stubborn-hint {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
         /* 移动端优化 */
         @media (max-width: 480px) {
             .container {
@@ -405,7 +354,6 @@
             }
         }
 
-        /* 超小屏幕适配 */
         @media (max-width: 360px) {
             .jump-input {
                 width: 50px;
@@ -419,11 +367,9 @@
 </head>
 <body>
 
-<div class="save-indicator" id="saveIndicator">✓ 已自动保存</div>
-
 <div class="container">
     <div id="study-view">
-        <!-- 顶部控制栏 - 新布局 -->
+        <!-- 顶部控制栏 -->
         <div class="top-controls">
             <button class="undo-btn" onclick="undoLast()" id="undo-btn">↩ 上步</button>
 
@@ -434,13 +380,11 @@
                 <option value="hsk4_data.json" selected>HSK 4</option>
             </select>
 
-            <!-- 跳转输入框 - 无按钮，回车触发 -->
             <input type="number" id="wordJumpInput" class="jump-input" min="1" placeholder="跳转" />
         </div>
 
         <div class="progress">
             进度: <span id="current-index">1</span> / <span id="total-count">0</span>
-            <span id="continue-hint" style="color: #4a90e2; font-size: 0.8rem; display: none;">（继续上次学习）</span>
         </div>
 
         <div class="flashcard-scene" id="flashcardScene">
@@ -503,27 +447,12 @@
         <div class="result-section"><h3 style="color: var(--warning-color)">不确定 (<span id="count-fuzzy">0</span>)</h3><div id="list-fuzzy"></div></div>
         <div class="result-section"><h3 style="color: var(--success-color)">认识 (<span id="count-know">0</span>)</h3><div id="list-know"></div></div>
 
-        <div class="stubborn-section" id="stubbornSection" style="display: none;">
-            <h3>🔥 顽固单词（多次标记不认识）</h3>
-            <p class="stubborn-hint">以下单词需要重点复习</p>
-            <div id="list-stubborn"></div>
-        </div>
-
         <button class="btn btn-stop" onclick="startReview()">去复习</button>
-        <button class="btn btn-stop" onclick="clearProgress()">清除进度重新开始</button>
+        <button class="btn btn-stop" onclick="location.reload()">重新开始</button>
     </div>
 </div>
 
 <script>
-    const STORAGE_KEYS = {
-        PROGRESS: 'hsk_progress',
-        RESULTS: 'hsk_results',
-        ERROR_COUNTS: 'hsk_error_counts',
-        CURRENT_INDEX: 'hsk_current_index',
-        IS_REVIEW_MODE: 'hsk_is_review',
-        LEVEL: 'hsk_level'
-    };
-
     let vocabulary = [];
     let currentIndex = 0;
     let results = { know: [], fuzzy: [], unknown: [] };
@@ -533,7 +462,6 @@
     let isInReviewMode = false;
     let reviewVocabulary = [];
     let isCardFlipped = false;
-    let errorCounts = {};
 
     const elCn = document.getElementById('word-cn');
     const elPy = document.getElementById('word-py');
@@ -549,75 +477,8 @@
     const elExamplePy = document.getElementById('example-py');
     const flashcardScene = document.getElementById('flashcardScene');
     const flashcardInner = document.getElementById('flashcardInner');
-    const saveIndicator = document.getElementById('saveIndicator');
 
-    function saveProgress() {
-        const data = {
-            currentIndex: currentIndex,
-            results: results,
-            errorCounts: errorCounts,
-            isInReviewMode: isInReviewMode,
-            level: document.getElementById('levelSelector').value,
-            timestamp: new Date().toISOString()
-        };
-        localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(data));
-        showSaveIndicator();
-    }
-
-    function showSaveIndicator() {
-        saveIndicator.classList.add('show');
-        setTimeout(() => {
-            saveIndicator.classList.remove('show');
-        }, 2000);
-    }
-
-    function loadProgress() {
-        const saved = localStorage.getItem(STORAGE_KEYS.PROGRESS);
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                return data;
-            } catch (e) {
-                console.error('加载进度失败:', e);
-            }
-        }
-        return null;
-    }
-
-    function clearProgress() {
-        if (confirm('确定要清除所有学习进度吗？')) {
-            localStorage.removeItem(STORAGE_KEYS.PROGRESS);
-            location.reload();
-        }
-    }
-
-    function restoreProgress() {
-        const data = loadProgress();
-        if (data) {
-            currentIndex = data.currentIndex || 0;
-            results = data.results || { know: [], fuzzy: [], unknown: [] };
-            errorCounts = data.errorCounts || {};
-            isInReviewMode = data.isInReviewMode || false;
-
-            if (data.level) {
-                document.getElementById('levelSelector').value = data.level;
-            }
-
-            if (currentIndex > 0) {
-                document.getElementById('continue-hint').style.display = 'inline';
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    function vibrate(pattern = 15) {
-        if ('vibrate' in navigator) {
-            navigator.vibrate(pattern);
-        }
-    }
-
+    // 震动反馈
     function vibrateByStatus(status) {
         if (!('vibrate' in navigator)) return;
 
@@ -632,58 +493,6 @@
                 navigator.vibrate(10);
                 break;
         }
-    }
-
-    function recordError(word) {
-        const key = word.cn;
-        if (!errorCounts[key]) {
-            errorCounts[key] = 0;
-        }
-        errorCounts[key]++;
-        saveProgress();
-    }
-
-    function getStubbornWords() {
-        const stubborn = [];
-        for (const [cn, count] of Object.entries(errorCounts)) {
-            if (count >= 2) {
-                const word = findWordByCn(cn);
-                if (word) {
-                    stubborn.push({ ...word, errorCount: count });
-                }
-            }
-        }
-        return stubborn.sort((a, b) => b.errorCount - a.errorCount);
-    }
-
-    function findWordByCn(cn) {
-        const allWords = [...vocabulary, ...reviewVocabulary];
-        return allWords.find(w => w.cn === cn);
-    }
-
-    function renderStubbornList() {
-        const stubborn = getStubbornWords();
-        const container = document.getElementById('list-stubborn');
-        const section = document.getElementById('stubbornSection');
-
-        if (stubborn.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-
-        section.style.display = 'block';
-        let html = '';
-        stubborn.forEach(item => {
-            html += `<div class="word-item">
-                <span>
-                    <strong>${item.cn}</strong> 
-                    <small style="color:#666">${item.py}</small>
-                    <span class="error-count">错${item.errorCount}次</span>
-                </span>
-                <span style="color:#555">${item.en}</span>
-            </div>`;
-        });
-        container.innerHTML = html;
     }
 
     async function loadVocabulary(src) {
@@ -707,7 +516,6 @@
         results = { know: [], fuzzy: [], unknown: [] };
         history = [];
         isInReviewMode = false;
-        errorCounts = {};
         await loadVocabulary(src);
         init();
     }
@@ -721,17 +529,10 @@
         }
 
         elTotalCount.textContent = vocabulary.length;
-
-        const hasProgress = restoreProgress();
-
         loadWord(currentIndex);
         updateUndoButton();
         document.getElementById('levelSelector').disabled = isInReviewMode;
         initSwipeGesture();
-
-        if (hasProgress) {
-            console.log('已恢复上次学习进度');
-        }
     }
 
     function loadWord(index) {
@@ -788,6 +589,7 @@
         elEn.classList.toggle('show');
     }
 
+    // 通用朗读函数
     function speakText(text, rate = 0.8) {
         if (!text || !text.trim()) return;
         if ('speechSynthesis' in window) {
@@ -824,19 +626,14 @@
     function handleResult(status) {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
 
-        const currentWord = currentVocabArray[currentIndex];
-
-        history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentWord.originalStatus : null });
+        history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentVocabArray[currentIndex].originalStatus : null });
 
         if (!isInReviewMode) {
-            results[status].push(currentWord);
-            if (status === 'unknown') {
-                recordError(currentWord);
-            }
+            results[status].push(currentVocabArray[currentIndex]);
         }
 
+        // 震动反馈
         vibrateByStatus(status);
-        saveProgress();
 
         currentIndex++;
         loadWord(currentIndex);
@@ -852,7 +649,6 @@
         }
         loadWord(currentIndex);
         updateUndoButton();
-        saveProgress();
     }
 
     function updateUndoButton() {
@@ -875,7 +671,6 @@
         renderList('list-unknown', results.unknown);
         renderList('list-fuzzy', results.fuzzy);
         renderList('list-know', results.know);
-        renderStubbornList();
     }
 
     function renderList(elementId, listData) {
@@ -886,16 +681,7 @@
         }
         let html = '';
         listData.forEach(item => {
-            const errorCount = errorCounts[item.cn] || 0;
-            const errorBadge = errorCount > 0 ? `<span class="error-count">错${errorCount}次</span>` : '';
-            html += `<div class="word-item">
-                <span>
-                    <strong>${item.cn}</strong> 
-                    <small style="color:#666">${item.py}</small>
-                    ${errorBadge}
-                </span>
-                <span style="color:#555">${item.en}</span>
-            </div>`;
+            html += `<div class="word-item"><span><strong>${item.cn}</strong> <small style="color:#666">${item.py}</small></span><span style="color:#555">${item.en}</span></div>`;
         });
         container.innerHTML = html;
     }
@@ -926,7 +712,6 @@
         resultView.style.display = 'none';
         loadWord(currentIndex);
         updateUndoButton();
-        saveProgress();
     }
 
     function initSwipeGesture() {
@@ -1040,16 +825,8 @@
         }
     }
 
-    // 跳转输入框回车事件
     document.getElementById('wordJumpInput').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
-            goToCard();
-        }
-    });
-
-    // 失去焦点时也触发跳转（可选，提升用户体验）
-    document.getElementById('wordJumpInput').addEventListener('blur', function(event) {
-        if (this.value.trim()) {
             goToCard();
         }
     });
@@ -1084,7 +861,6 @@
         currentIndex = targetIndex;
         inputElement.value = '';
         inputElement.blur();
-        saveProgress();
     }
 </script>
 
