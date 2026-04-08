@@ -11,10 +11,98 @@
         }
         :root { --primary-color: #4a90e2; --success-color: #2ecc71; --warning-color: #f1c40f; --danger-color: #e74c3c; --bg-color: #f5f7fa; --card-bg: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #333; }
-        .container { width: 90%; max-width: 500px; text-align: center; position: relative; }
-        .undo-btn { position: absolute; top: -50px; left: 0; background-color: #95a5a6; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+        .container { width: 90%; max-width: 500px; text-align: center; position: relative; padding-top: 60px; }
+
+        /* 顶部控制栏 - 新布局 */
+        .top-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 0 5px;
+        }
+
+        /* 上步按钮 */
+        .undo-btn { 
+            background-color: #95a5a6; 
+            color: white; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
         .undo-btn:hover { background-color: #7f8c8c; }
-        .progress { margin-bottom: 20px; color: #666; font-size: 0.9rem; }
+        .undo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* 级别选择器 - 中间 */
+        .level-selector {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            min-width: 80px;
+        }
+
+        /* 跳转输入框 - 右侧，无按钮 */
+        .jump-input {
+            width: 70px;
+            padding: 8px 5px;
+            font-size: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+        .jump-input::placeholder {
+            font-size: 0.75rem;
+            color: #999;
+        }
+        .jump-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .jump-input::-webkit-outer-spin-button,
+        .jump-input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* 保存状态提示 */
+        .save-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        .save-indicator.show {
+            opacity: 1;
+        }
+
+        .progress { 
+            margin-bottom: 20px; 
+            color: #666; 
+            font-size: 0.9rem; 
+            margin-top: 10px;
+        }
 
         /* 3D卡片容器 */
         .flashcard-scene {
@@ -37,7 +125,6 @@
             transform-style: preserve-3d;
         }
 
-        /* 向左翻转（逆时针）显示背面 */
         .flashcard-inner.is-flipped {
             transform: rotateY(-180deg);
         }
@@ -67,13 +154,11 @@
             z-index: 2;
         }
 
-        /* 背面初始状态 - 需要先向左旋转才能正确显示 */
         .flashcard-face.back {
             transform: rotateY(-180deg);
             background-color: var(--card-bg);
         }
 
-        /* 汉字样式 - 移除下划线 */
         .chinese { 
             font-size: 3.5rem; 
             font-weight: bold; 
@@ -92,7 +177,6 @@
         .english.show { opacity: 1; transform: translateY(0); }
         .hint-text { font-size: 0.8rem; color: #bdc3c7; margin-top: 30px; }
 
-        /* 背面例句样式 - 可点击朗读 */
         .example-section {
             width: 100%;
             padding: 0 20px;
@@ -151,7 +235,6 @@
             cursor: default;
         }
 
-        /* 滑动指示器 - 只在正面显示 */
         .swipe-indicator {
             position: absolute;
             top: 50%;
@@ -176,7 +259,6 @@
             opacity: 1;
         }
 
-        /* 复习模式状态标签 - 固定在卡片内部左上角 */
         .review-status-tag {
             position: absolute;
             top: 15px;
@@ -197,10 +279,8 @@
             color: #333;
         }
 
-        /* 按钮容器样式 */
         .controls { display: flex; justify-content: space-between; gap: 10px; margin-top: 30px; }
 
-        /* 按钮基础样式 */
         .btn { 
             border: none; 
             padding: 15px 20px; 
@@ -220,18 +300,15 @@
         }
         .btn:disabled { background-color: #ccc; cursor: not-allowed; }
 
-        /* 按钮特定颜色 */
         .btn-know { background-color: var(--success-color); }
         .btn-fuzzy { background-color: var(--warning-color); color: #333; }
         .btn-unknow { background-color: var(--danger-color); }
 
-        /* 按钮按下特效 */
         .btn:active { 
             transform: scale(0.95);
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* 按钮图标样式 */
         .btn-icon { 
             width: 24px; 
             height: 24px; 
@@ -240,7 +317,6 @@
             justify-content: center;
         }
 
-        /* 图标内的 SVG 图形样式 */
         .btn-icon svg { 
             width: 100%; 
             height: 100%; 
@@ -253,55 +329,62 @@
         .result-section h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
         .word-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
 
-        .jump-controls {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            display: flex;
-            gap: 5px;
-        }
-        .jump-input {
-            padding: 10px 15px 10px 5px;
-            font-size: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 80px;
-            text-align: center;
-            appearance: none;
-            -moz-appearance: textfield;
-        }
-        .btn-jump {
-            background-color: #74b9ff;
+        .error-count {
+            background-color: var(--danger-color);
             color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-jump:hover {
-            background-color: #5f9ae6;
-        }
-        .jump-input::-webkit-outer-spin-button,
-        .jump-input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 5px;
         }
 
-        .level-selector {
-            position: absolute;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 8px 12px;
-            font-size: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .stubborn-section {
+            background-color: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .stubborn-section h3 {
+            color: var(--danger-color);
+            margin-top: 0;
+            border-bottom: 2px solid #feb2b2;
+            padding-bottom: 10px;
+        }
+
+        .stubborn-hint {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
         }
 
         /* 移动端优化 */
         @media (max-width: 480px) {
+            .container {
+                padding-top: 55px;
+            }
+
+            .top-controls {
+                gap: 8px;
+            }
+
+            .undo-btn {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            .level-selector {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+
+            .jump-input {
+                width: 60px;
+                padding: 6px 3px;
+                font-size: 0.85rem;
+            }
+
             .flashcard-scene {
                 height: 280px;
             }
@@ -321,36 +404,48 @@
                 padding: 3px 6px;
             }
         }
+
+        /* 超小屏幕适配 */
+        @media (max-width: 360px) {
+            .jump-input {
+                width: 50px;
+            }
+
+            .level-selector {
+                min-width: 70px;
+            }
+        }
     </style>
 </head>
 <body>
 
+<div class="save-indicator" id="saveIndicator">✓ 已自动保存</div>
+
 <div class="container">
     <div id="study-view">
-        <button class="undo-btn" onclick="undoLast()" id="undo-btn">↩ 上步</button>
+        <!-- 顶部控制栏 - 新布局 -->
+        <div class="top-controls">
+            <button class="undo-btn" onclick="undoLast()" id="undo-btn">↩ 上步</button>
 
-        <select class="level-selector" id="levelSelector" onchange="switchLevel(this.value)" disabled>
-            <option value="hsk1_data.json">HSK 1</option>
-            <option value="hsk2_data.json">HSK 2</option>
-            <option value="hsk3_data.json">HSK 3</option>
-            <option value="hsk4_data.json" selected>HSK 4</option>
-        </select>
+            <select class="level-selector" id="levelSelector" onchange="switchLevel(this.value)" disabled>
+                <option value="hsk1_data.json">HSK 1</option>
+                <option value="hsk2_data.json">HSK 2</option>
+                <option value="hsk3_data.json">HSK 3</option>
+                <option value="hsk4_data.json" selected>HSK 4</option>
+            </select>
 
-        <div class="jump-controls">
-            <input type="number" id="wordJumpInput" class="jump-input" min="1" placeholder="单词序号" />
-            <button class="btn-jump" onclick="goToCard()">跳转</button>
+            <!-- 跳转输入框 - 无按钮，回车触发 -->
+            <input type="number" id="wordJumpInput" class="jump-input" min="1" placeholder="跳转" />
         </div>
 
         <div class="progress">
             进度: <span id="current-index">1</span> / <span id="total-count">0</span>
+            <span id="continue-hint" style="color: #4a90e2; font-size: 0.8rem; display: none;">（继续上次学习）</span>
         </div>
 
-        <!-- 3D卡片结构 -->
         <div class="flashcard-scene" id="flashcardScene">
             <div class="flashcard-inner" id="flashcardInner">
-                <!-- 正面 -->
                 <div class="flashcard-face front" id="cardFront" onclick="toggleAnswer()">
-                    <!-- 复习状态标签 - 固定在卡片内部左上角 -->
                     <div id="review-status-tag" class="review-status-tag" style="display: none;">
                         <span id="tag-text">未知</span>
                     </div>
@@ -362,7 +457,6 @@
                     <div class="swipe-indicator right">›</div>
                 </div>
 
-                <!-- 背面 - 点击例句朗读 -->
                 <div class="flashcard-face back" id="cardBack" onclick="speakExample(event)">
                     <div class="example-section">
                         <div class="example-label">例句</div>
@@ -408,12 +502,28 @@
         <div class="result-section"><h3 style="color: var(--danger-color)">不认识 (<span id="count-unknown">0</span>)</h3><div id="list-unknown"></div></div>
         <div class="result-section"><h3 style="color: var(--warning-color)">不确定 (<span id="count-fuzzy">0</span>)</h3><div id="list-fuzzy"></div></div>
         <div class="result-section"><h3 style="color: var(--success-color)">认识 (<span id="count-know">0</span>)</h3><div id="list-know"></div></div>
+
+        <div class="stubborn-section" id="stubbornSection" style="display: none;">
+            <h3>🔥 顽固单词（多次标记不认识）</h3>
+            <p class="stubborn-hint">以下单词需要重点复习</p>
+            <div id="list-stubborn"></div>
+        </div>
+
         <button class="btn btn-stop" onclick="startReview()">去复习</button>
-        <button class="btn btn-stop" onclick="location.reload()">重新开始</button>
+        <button class="btn btn-stop" onclick="clearProgress()">清除进度重新开始</button>
     </div>
 </div>
 
 <script>
+    const STORAGE_KEYS = {
+        PROGRESS: 'hsk_progress',
+        RESULTS: 'hsk_results',
+        ERROR_COUNTS: 'hsk_error_counts',
+        CURRENT_INDEX: 'hsk_current_index',
+        IS_REVIEW_MODE: 'hsk_is_review',
+        LEVEL: 'hsk_level'
+    };
+
     let vocabulary = [];
     let currentIndex = 0;
     let results = { know: [], fuzzy: [], unknown: [] };
@@ -423,6 +533,7 @@
     let isInReviewMode = false;
     let reviewVocabulary = [];
     let isCardFlipped = false;
+    let errorCounts = {};
 
     const elCn = document.getElementById('word-cn');
     const elPy = document.getElementById('word-py');
@@ -438,6 +549,142 @@
     const elExamplePy = document.getElementById('example-py');
     const flashcardScene = document.getElementById('flashcardScene');
     const flashcardInner = document.getElementById('flashcardInner');
+    const saveIndicator = document.getElementById('saveIndicator');
+
+    function saveProgress() {
+        const data = {
+            currentIndex: currentIndex,
+            results: results,
+            errorCounts: errorCounts,
+            isInReviewMode: isInReviewMode,
+            level: document.getElementById('levelSelector').value,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(data));
+        showSaveIndicator();
+    }
+
+    function showSaveIndicator() {
+        saveIndicator.classList.add('show');
+        setTimeout(() => {
+            saveIndicator.classList.remove('show');
+        }, 2000);
+    }
+
+    function loadProgress() {
+        const saved = localStorage.getItem(STORAGE_KEYS.PROGRESS);
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                return data;
+            } catch (e) {
+                console.error('加载进度失败:', e);
+            }
+        }
+        return null;
+    }
+
+    function clearProgress() {
+        if (confirm('确定要清除所有学习进度吗？')) {
+            localStorage.removeItem(STORAGE_KEYS.PROGRESS);
+            location.reload();
+        }
+    }
+
+    function restoreProgress() {
+        const data = loadProgress();
+        if (data) {
+            currentIndex = data.currentIndex || 0;
+            results = data.results || { know: [], fuzzy: [], unknown: [] };
+            errorCounts = data.errorCounts || {};
+            isInReviewMode = data.isInReviewMode || false;
+
+            if (data.level) {
+                document.getElementById('levelSelector').value = data.level;
+            }
+
+            if (currentIndex > 0) {
+                document.getElementById('continue-hint').style.display = 'inline';
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    function vibrate(pattern = 15) {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(pattern);
+        }
+    }
+
+    function vibrateByStatus(status) {
+        if (!('vibrate' in navigator)) return;
+
+        switch(status) {
+            case 'unknown':
+                navigator.vibrate([20, 30, 20]);
+                break;
+            case 'fuzzy':
+                navigator.vibrate([30]);
+                break;
+            case 'know':
+                navigator.vibrate(10);
+                break;
+        }
+    }
+
+    function recordError(word) {
+        const key = word.cn;
+        if (!errorCounts[key]) {
+            errorCounts[key] = 0;
+        }
+        errorCounts[key]++;
+        saveProgress();
+    }
+
+    function getStubbornWords() {
+        const stubborn = [];
+        for (const [cn, count] of Object.entries(errorCounts)) {
+            if (count >= 2) {
+                const word = findWordByCn(cn);
+                if (word) {
+                    stubborn.push({ ...word, errorCount: count });
+                }
+            }
+        }
+        return stubborn.sort((a, b) => b.errorCount - a.errorCount);
+    }
+
+    function findWordByCn(cn) {
+        const allWords = [...vocabulary, ...reviewVocabulary];
+        return allWords.find(w => w.cn === cn);
+    }
+
+    function renderStubbornList() {
+        const stubborn = getStubbornWords();
+        const container = document.getElementById('list-stubborn');
+        const section = document.getElementById('stubbornSection');
+
+        if (stubborn.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        let html = '';
+        stubborn.forEach(item => {
+            html += `<div class="word-item">
+                <span>
+                    <strong>${item.cn}</strong> 
+                    <small style="color:#666">${item.py}</small>
+                    <span class="error-count">错${item.errorCount}次</span>
+                </span>
+                <span style="color:#555">${item.en}</span>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
 
     async function loadVocabulary(src) {
         try {
@@ -460,6 +707,7 @@
         results = { know: [], fuzzy: [], unknown: [] };
         history = [];
         isInReviewMode = false;
+        errorCounts = {};
         await loadVocabulary(src);
         init();
     }
@@ -473,10 +721,17 @@
         }
 
         elTotalCount.textContent = vocabulary.length;
+
+        const hasProgress = restoreProgress();
+
         loadWord(currentIndex);
         updateUndoButton();
         document.getElementById('levelSelector').disabled = isInReviewMode;
         initSwipeGesture();
+
+        if (hasProgress) {
+            console.log('已恢复上次学习进度');
+        }
     }
 
     function loadWord(index) {
@@ -533,11 +788,9 @@
         elEn.classList.toggle('show');
     }
 
-    // 通用朗读函数 - 复用核心逻辑
     function speakText(text, rate = 0.8) {
         if (!text || !text.trim()) return;
         if ('speechSynthesis' in window) {
-            // 取消之前的朗读
             speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'zh-CN';
@@ -548,18 +801,14 @@
         }
     }
 
-    // 点击汉字：发音并切换拼音
     function speakAndTogglePinyin(event) {
         event.stopPropagation();
         speakText(elCn.textContent, currentSpeechRate);
         togglePinyin();
     }
 
-    // 点击例句：仅发音（不复用拼音切换逻辑）
     function speakExample(event) {
-        // 阻止事件冒泡，防止触发卡片翻转
         event.stopPropagation();
-        // 朗读例句
         speakText(elExampleCn.textContent, currentSpeechRate);
     }
 
@@ -575,11 +824,19 @@
     function handleResult(status) {
         let currentVocabArray = isInReviewMode ? reviewVocabulary : vocabulary;
 
-        history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentVocabArray[currentIndex].originalStatus : null });
-        if (isInReviewMode) {
-        } else {
-            results[status].push(currentVocabArray[currentIndex]);
+        const currentWord = currentVocabArray[currentIndex];
+
+        history.push({ index: currentIndex, status: status, originalStatus: isInReviewMode ? currentWord.originalStatus : null });
+
+        if (!isInReviewMode) {
+            results[status].push(currentWord);
+            if (status === 'unknown') {
+                recordError(currentWord);
+            }
         }
+
+        vibrateByStatus(status);
+        saveProgress();
 
         currentIndex++;
         loadWord(currentIndex);
@@ -595,6 +852,7 @@
         }
         loadWord(currentIndex);
         updateUndoButton();
+        saveProgress();
     }
 
     function updateUndoButton() {
@@ -617,6 +875,7 @@
         renderList('list-unknown', results.unknown);
         renderList('list-fuzzy', results.fuzzy);
         renderList('list-know', results.know);
+        renderStubbornList();
     }
 
     function renderList(elementId, listData) {
@@ -627,7 +886,16 @@
         }
         let html = '';
         listData.forEach(item => {
-            html += `<div class="word-item"><span><strong>${item.cn}</strong> <small style="color:#666">${item.py}</small></span><span style="color:#555">${item.en}</span></div>`;
+            const errorCount = errorCounts[item.cn] || 0;
+            const errorBadge = errorCount > 0 ? `<span class="error-count">错${errorCount}次</span>` : '';
+            html += `<div class="word-item">
+                <span>
+                    <strong>${item.cn}</strong> 
+                    <small style="color:#666">${item.py}</small>
+                    ${errorBadge}
+                </span>
+                <span style="color:#555">${item.en}</span>
+            </div>`;
         });
         container.innerHTML = html;
     }
@@ -658,6 +926,7 @@
         resultView.style.display = 'none';
         loadWord(currentIndex);
         updateUndoButton();
+        saveProgress();
     }
 
     function initSwipeGesture() {
@@ -771,8 +1040,16 @@
         }
     }
 
+    // 跳转输入框回车事件
     document.getElementById('wordJumpInput').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
+            goToCard();
+        }
+    });
+
+    // 失去焦点时也触发跳转（可选，提升用户体验）
+    document.getElementById('wordJumpInput').addEventListener('blur', function(event) {
+        if (this.value.trim()) {
             goToCard();
         }
     });
@@ -793,12 +1070,12 @@
         const inputElement = document.getElementById('wordJumpInput');
         const numberStr = inputElement.value.trim();
         if (!numberStr) {
-            alert("请输入一个单词序号。");
             return;
         }
         const targetIndex = parseInt(numberStr) - 1;
         if (targetIndex < 0 || targetIndex >= currentVocabArray.length) {
             alert(`请输入 1 到 ${currentVocabArray.length} 之间的数字。`);
+            inputElement.value = '';
             return;
         }
         history = [];
@@ -806,6 +1083,8 @@
         loadWord(targetIndex);
         currentIndex = targetIndex;
         inputElement.value = '';
+        inputElement.blur();
+        saveProgress();
     }
 </script>
 
